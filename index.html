@@ -121,9 +121,6 @@ header.top{border-bottom:1px solid var(--rule); background:var(--ground); positi
 .chart .opt{stroke:var(--blue); stroke-width:1; stroke-dasharray:3 4; opacity:.65}
 .chart .cursor{stroke:var(--ink); stroke-width:1.25}
 .chart .band{fill:var(--green); opacity:.19}
-.chart .band-dn{fill:var(--amber); opacity:.17}
-.chart .c-dn{fill:none; stroke:var(--amber); stroke-width:2; stroke-dasharray:2 4}
-.chart text.big.b{fill:var(--amber)}
 .chart text{font-family:"DM Mono",monospace; font-size:11px; fill:var(--ink2)}
 .chart text.big{font-size:13px; fill:var(--ink)}
 .chart text.big.g{fill:var(--green)}
@@ -135,7 +132,6 @@ header.top{border-bottom:1px solid var(--rule); background:var(--ground); positi
 .legend i{display:inline-block; width:22px; margin-right:7px; vertical-align:middle}
 .legend .s-da{border-top:2.4px solid var(--blue)}
 .legend .s-id{border-top:2px dashed var(--green)}
-.legend .s-dn{border-top:2px dotted var(--amber)}
 .slider-row{padding:10px 28px 6px}
 input[type=range]{width:100%; margin:6px 0 0; accent-color:var(--blue)}
 input[type=range]:focus-visible{outline:2px solid var(--blue); outline-offset:4px}
@@ -147,7 +143,6 @@ input[type=range]:focus-visible{outline:2px solid var(--blue); outline-offset:4p
 .cell .big{font-family:"DM Mono",monospace; font-size:2.35rem; font-weight:500; letter-spacing:-.03em; line-height:1.05; display:block; margin-top:8px}
 .cell .big.da{color:var(--blue-ink)}
 .cell .big.id{color:var(--green)}
-.cell .big.dn{color:var(--amber); font-size:1.5rem; margin-top:4px}
 .cell small{display:block; margin-top:8px; color:var(--ink2); font-size:.83rem; line-height:1.45}
 .verdict-cell{background:var(--raise); font-size:.92rem; line-height:1.55}
 .notes{border-top:1px solid var(--rule); background:var(--raise)}
@@ -387,11 +382,10 @@ tr:last-child td{border-bottom:0}
 
     <div class="chart-box">
       <svg class="chart" id="chart" viewBox="0 0 900 380" role="img"
-           aria-label="Share of perfect-foresight revenue captured against the forecast percentile committed day-ahead, with the range a second intraday trade can add or give back"></svg>
+           aria-label="Share of perfect-foresight revenue captured, against the forecast percentile committed day-ahead"></svg>
       <p class="legend">
         <i class="s-da"></i>where you end up, day-ahead only
-        <i class="s-id"></i>where a good intraday trade takes you
-        <i class="s-dn"></i>where a bad one takes you
+        <i class="s-id"></i>where you could end up if you also trade intraday
       </p>
     </div>
 
@@ -406,9 +400,8 @@ tr:last-child td{border-bottom:0}
         <span class="big da" id="pctDA">&mdash;</span>
       </div>
       <div class="cell">
-        <span class="mono">At stake in intraday</span>
+        <span class="mono">Recoverable in intraday</span>
         <span class="big id" id="pctID">&mdash;</span>
-        <span class="big dn" id="pctDN">&mdash;</span>
       </div>
       <div class="cell verdict-cell" id="verdict">Drag across the chart.</div>
     </div>
@@ -416,8 +409,7 @@ tr:last-child td{border-bottom:0}
     <details class="notes">
       <summary>How this is scored</summary>
       <div class="notes-body">
-        <p>Sell more than you generate and you buy the shortfall back at the imbalance price; sell less and the surplus settles cheap. The optimal commitment therefore sits below your median forecast. The green area is what a second trade in intraday could recover once the forecast has sharpened; it widens as your day-ahead commitment gets worse, because there is more error left to correct.</p>
-        <p>The trade can also go the other way. The red area is the same full-size correction made against an intraday view that has not actually sharpened &mdash; off by 18 MW rather than 7 &mdash; so you pay the spread to move your position toward the wrong number. It is widest exactly where your day-ahead commitment was already good, and closes at the right of the chart: once you are wrong enough, even a clumsy correction beats leaving it alone. Intraday is a second decision, not a free repair.</p>
+        <p>Sell more than you generate and you buy the shortfall back at the imbalance price; sell less and the surplus settles cheap. The optimal commitment therefore sits below your median forecast. The shaded area is what a second trade in intraday could still recover once the forecast has sharpened. It widens as your day-ahead commitment gets worse, because there is more error left to correct.</p>
         <p><b>100% = selling actual generation at the day-ahead price.</b> Day-ahead &euro;80/MWh, intraday &euro;72 sell / &euro;90 buy, imbalance &euro;108 short / &euro;58 long with occasional spikes. Forecast median 55.5 MW on 100 MW of capacity. Illustrative DK1 conditions, not a specific trading day.</p><p>The demo assumes a <b>well-calibrated</b> forecast and a <b>known</b> price asymmetry, so it isolates the commitment decision from the forecasting problem. A real edition is harder: participants supply the distribution as well as the position, and nobody knows in advance which way the system will be short.</p>
       </div>
     </details>
@@ -968,35 +960,30 @@ tr:last-child td{border-bottom:0}
 
   /* ---------- model: DK1 wind, day-ahead + intraday + imbalance ---------- */
   var Q = [22.75,25.86,27.97,29.62,31.01,32.21,33.29,34.27,35.18,36.02,36.81,37.55,38.26,38.94,39.59,40.21,40.82,41.4,41.96,42.51,43.05,43.57,44.08,44.57,45.06,45.54,46.01,46.47,46.93,47.37,47.82,48.25,48.68,49.11,49.53,49.94,50.36,50.76,51.17,51.57,51.97,52.37,52.76,53.16,53.55,53.94,54.32,54.71,55.09,55.48,55.86,56.24,56.63,57.01,57.39,57.78,58.16,58.54,58.93,59.32,59.7,60.09,60.49,60.88,61.28,61.67,62.08,62.48,62.89,63.3,63.72,64.14,64.56,65,65.43,65.88,66.33,66.79,67.26,67.74,68.23,68.73,69.24,69.77,70.32,70.88,71.47,72.08,72.72,73.39,74.1,74.86,75.68,76.57,77.55,78.67,80,81.66,84.06];
-  var PDA = 80, RESID = 7, RESID_BAD = 18;
+  var PDA = 80, RESID = 7;
   function prices(j){
     return (j % 10 === 0) ? {long:10, short:400, idSell:66, idBuy:115}
                           : {long:58, short:108, idSell:72, idBuy:90};
   }
   var perfect = Q.reduce(function(s,g){ return s + g * PDA; }, 0) / Q.length;
 
-  function captured(L, alpha, viewErr){
-    var c = Q[L-1], tot = 0, err = (viewErr == null) ? RESID : viewErr;
+  function captured(L, alpha){
+    var c = Q[L-1], tot = 0;
     for (var j = 0; j < Q.length; j++){
       var g = Q[j], s = (j % 2 === 0) ? 1 : -1, P = prices(j);
-      var a = alpha * ((g - s * err) - c);
+      var a = alpha * ((g - s * RESID) - c);
       var imb = g - (c + a);
       tot += c * PDA + a * (a > 0 ? P.idSell : P.idBuy) + imb * (imb > 0 ? P.long : P.short);
     }
     return tot / Q.length / perfect;
   }
 
-  var curveDA = [], curveID = [], curveDN = [], bestDA = 1;
+  var curveDA = [], curveID = [], bestDA = 1;
   for (var L = 1; L <= 99; L++){
-    var base = captured(L, 0);
-    curveDA.push(base);
+    curveDA.push(captured(L, 0));
     var best = 0;
     for (var k = 0; k <= 20; k++){ var v = captured(L, k/20); if (v > best) best = v; }
     curveID.push(best);
-    /* a full-size correction sized against an intraday view no better than the
-       day-ahead one. Clamped at the day-ahead line: where even a bad trade still
-       beats committing once, there is nothing given back. */
-    curveDN.push(Math.min(base, captured(L, 1, RESID_BAD)));
     if (curveDA[L-1] > curveDA[bestDA-1]) bestDA = L;
   }
 
@@ -1021,28 +1008,22 @@ tr:last-child td{border-bottom:0}
   function path(arr){ return arr.map(function(v,i){ return (i?"L":"M") + X(i+1).toFixed(1) + " " + Y(v).toFixed(1); }).join(" "); }
   var bandD = path(curveID) + " L" + X(99).toFixed(1) + " " + Y(curveDA[98]).toFixed(1) +
               curveDA.slice().reverse().map(function(v,i){ return " L" + X(99-i).toFixed(1) + " " + Y(v).toFixed(1); }).join("") + " Z";
-  var bandDnD = path(curveDN) + " L" + X(99).toFixed(1) + " " + Y(curveDA[98]).toFixed(1) +
-                curveDA.slice().reverse().map(function(v,i){ return " L" + X(99-i).toFixed(1) + " " + Y(v).toFixed(1); }).join("") + " Z";
   chart.appendChild(mk("path", {d:bandD, "class":"band"}));
-  chart.appendChild(mk("path", {d:bandDnD, "class":"band-dn"}));
   chart.appendChild(mk("path", {d:path(curveID), "class":"c-id"}));
-  chart.appendChild(mk("path", {d:path(curveDN), "class":"c-dn"}));
   chart.appendChild(mk("path", {d:path(curveDA), "class":"c-da"}));
 
   chart.appendChild(mk("line", {x1:X(bestDA), x2:X(bestDA), y1:PT, y2:H-PB, "class":"opt"}));
   chart.appendChild(mk("text", {x:X(bestDA)-5, y:PT+12, "text-anchor":"end", fill:"var(--blue)"}, "best p" + bestDA));
 
-  var labID = mk("text", {x:X(80), y:PT+10, "text-anchor":"middle", "class":"big g"}, "intraday, traded well");
-  var labDN = mk("text", {x:X(34), y:PT+10, "text-anchor":"middle", "class":"big b"}, "traded badly");
+  var labID = mk("text", {x:X(80), y:PT+10, "text-anchor":"middle", "class":"big g"}, "recoverable in intraday");
   var labDA = mk("text", {x:X(60), y:PT+10, "text-anchor":"end", fill:"var(--blue)", "class":"big"}, "day-ahead only");
-  chart.appendChild(labID); chart.appendChild(labDN); chart.appendChild(labDA);
+  chart.appendChild(labID); chart.appendChild(labDA);
 
   var cursor = mk("line", {x1:X(50), x2:X(50), y1:PT, y2:H-PB, "class":"cursor"});
   chart.appendChild(cursor);
   var dotDA = mk("circle", {cx:X(50), cy:Y(curveDA[49]), r:4.5, fill:"var(--blue)"});
   var dotID = mk("circle", {cx:X(50), cy:Y(curveID[49]), r:4.5, fill:"var(--green)"});
-  var dotDN = mk("circle", {cx:X(50), cy:Y(curveDN[49]), r:4.5, fill:"var(--amber)"});
-  chart.appendChild(dotDA); chart.appendChild(dotID); chart.appendChild(dotDN);
+  chart.appendChild(dotDA); chart.appendChild(dotID);
 
   chart.appendChild(mk("text", {x:PL, y:H-14}, "p1"));
   chart.appendChild(mk("text", {x:W-PR, y:H-14, "text-anchor":"end"}, "p99"));
@@ -1050,34 +1031,28 @@ tr:last-child td{border-bottom:0}
 
   var slider = document.getElementById("q"),
       elDA = document.getElementById("pctDA"), elID = document.getElementById("pctID"),
-      elDN = document.getElementById("pctDN"),
       elCommit = document.getElementById("commit"), elVerdict = document.getElementById("verdict");
 
   function render(){
-    var L = +slider.value, vDA = curveDA[L-1], vID = curveID[L-1], vDN = curveDN[L-1], c = Q[L-1], x = X(L);
+    var L = +slider.value, vDA = curveDA[L-1], vID = curveID[L-1], c = Q[L-1], x = X(L);
     cursor.setAttribute("x1", x); cursor.setAttribute("x2", x);
     dotDA.setAttribute("cx", x); dotDA.setAttribute("cy", Y(vDA));
     dotID.setAttribute("cx", x); dotID.setAttribute("cy", Y(vID));
-    dotDN.setAttribute("cx", x); dotDN.setAttribute("cy", Y(vDN));
     labID.setAttribute("y", (Y(curveID[79]) + Y(curveDA[79])) / 2 + 4);
-    labDN.setAttribute("y", (Y(curveDN[33]) + Y(curveDA[33])) / 2 + 4);
     labDA.setAttribute("y", Y(curveDA[59]) + 22);
     elDA.textContent = (vDA*100).toFixed(1) + "%";
-    elID.textContent = "+" + ((vID - vDA)*100).toFixed(1) + " pts";
-    elDN.textContent = ((vDN - vDA)*100).toFixed(1).replace("-", "\u2212") + " pts";
+    elID.textContent = "+" + (vID - vDA >= 0 ? "" : "") + ((vID - vDA)*100).toFixed(1) + " pts";
     elCommit.textContent = c.toFixed(1) + " MW";
 
-    var down = (vDA - vDN) * 100;
+    var gap = (vID - vDA) * 100;
     if (L === bestDA){
-      elVerdict.textContent = "The best you can do committing once. There is little left for intraday to fix, and the most it can do here is cost you.";
+      elVerdict.textContent = "The best you can do committing once. The shaded gap is small here, because there is little left to fix.";
     } else if (L > 88){
-      elVerdict.textContent = "You have sold power you will probably not generate. Intraday would rescue most of it, and even a clumsy correction beats leaving it.";
+      elVerdict.textContent = "You have sold power you will probably not generate. The gap is wide: intraday would rescue most of it.";
     } else if (L < bestDA - 18){
       elVerdict.textContent = "Too cautious: generation goes to imbalance instead of the day-ahead price.";
-    } else if (down > 3){
-      elVerdict.textContent = "Both bands are open here. A sharpened forecast pays; trading on one that has not sharpened costs about as much.";
     } else {
-      elVerdict.textContent = "Commit worse and the upside widens, because intraday has more to correct.";
+      elVerdict.textContent = "Commit worse and the shaded gap widens, because intraday has more to correct.";
     }
   }
 
