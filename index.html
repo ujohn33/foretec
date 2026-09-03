@@ -252,8 +252,6 @@ footer{border-top:1px solid var(--rule); padding:36px 0 60px; color:var(--ink2);
 .dochead{padding:54px 0 30px; max-width:70ch}
 .docmeta{margin-top:12px; font-family:"DM Mono",ui-monospace,monospace; font-size:.74rem; letter-spacing:.06em; color:var(--ink2)}
 .abstract{margin-top:22px; font-size:1.02rem; color:var(--ink2); line-height:1.7; padding-top:20px; border-top:1px solid var(--rule)}
-.defterm{margin-top:18px; font-size:.9rem; color:var(--ink2); line-height:1.65; border-left:2px solid var(--rule); padding-left:16px}
-.defterm b{color:var(--ink); font-weight:600}
 
 #page-mechanics .s{display:grid; grid-template-columns:180px 1fr; gap:0 48px; padding:34px 0; border-top:1px solid var(--rule)}
 .sidehead{font-size:1rem; font-weight:600; letter-spacing:-.012em; line-height:1.35; position:sticky; top:96px; align-self:start}
@@ -619,14 +617,13 @@ tr:last-child td{border-bottom:0}
     <h1>How an edition is scored</h1>
     <p class="docmeta">Foretec &middot; edition one, DK1 &middot; draft for discussion, September 2026</p>
     <p class="abstract">A participant holds a notional 100 MW share of DK1 onshore wind. They commit a position ahead of delivery, revise it once as the forecast sharpens, and carry whatever is left as imbalance. The score is the share of perfect-foresight revenue they capture. Everything settles against published prices; the only modelled quantity is what a participant's own volume would have done to the price, because that is the one thing no dataset contains. Every choice below trades realism against the number of people who can enter, and this is where the line is drawn.</p>
-    <p class="defterm"><b>HEFTCom</b> is referred to throughout. It is the Hybrid Energy Forecasting and Trading Competition, run in 2024 &mdash; the only public precedent for a competition of this shape, in which teams forecast a British wind and solar portfolio and traded it against day-ahead and imbalance prices. Most of the choices below are a departure from one of its design decisions, and each is argued on its own terms.</p>
   </div>
 
   <section class="s">
     <h2 class="sidehead">The asset</h2>
     <div class="s-body">
     <div class="prose">
-      <p>HEFTCom used Hornsea 1, a single offshore wind farm, and lost time to an unannounced outage the organisers spotted late; participants had no instructions on where to read the operator's outage notices. Using a fixed share of DK1 aggregate onshore wind removes that entire failure mode. There is no single unit to trip, no outage feed to monitor, and the underlying series is published by Energinet without a licence negotiation. Managing a portfolio rather than one asset is also closer to what a desk actually does.</p>
+      <p>Running a competition on a single named wind farm makes the whole edition hostage to that one unit: an unannounced outage distorts every score in the period, and participants have to be told where to watch for it. Using a fixed share of DK1 aggregate onshore wind removes that entire failure mode. There is no single unit to trip, no outage feed to monitor, and the underlying series is published by Energinet without a licence negotiation. Managing a portfolio rather than one asset is also closer to what a desk actually does.</p>
       <p>The cost is a little realism: zonal wind is smoother than a single farm, so forecast errors are smaller in percentage terms and the problem is marginally easier. That is an acceptable price for a first edition that has to start on schedule.</p>
     </div>
     </div>
@@ -770,7 +767,7 @@ tr:last-child td{border-bottom:0}
     <div class="s-body">
     <div class="prose">
       <p>The published imbalance price is the price that occurred given the system imbalance that actually happened &mdash; and that imbalance did not include the participant's notional wind. The data holds one realisation, not a function mapping volume to price, so there is no feed that fixes this. It is a missing counterfactual, not a missing dataset.</p>
-      <p>Leaving it out is not neutral either. Against a fixed price path with no impact, any period where the imbalance price beat day-ahead has an obvious answer: commit nothing and take the whole volume at imbalance. That is a corner solution, and a leaderboard full of them ranks people on a price read rather than on forecasting and decision skill. HEFTCom prevented it with a constant coefficient of 0.07, which their paper states but never derives or calibrates.</p>
+      <p>Leaving it out is not neutral either. Against a fixed price path with no impact, any period where the imbalance price beat day-ahead has an obvious answer: commit nothing and take the whole volume at imbalance. That is a corner solution, and a leaderboard full of them ranks people on a price read rather than on forecasting and decision skill. The usual patch is a single constant coefficient applied to every period, which prevents the corner solution but is rarely derived from anything, and is wrong in both directions: too soft in tight periods, too punitive in slack ones.</p>
       <p>The proposal here keeps the linear form &mdash; it is cheap, it keeps every participant's score independent of every other participant's, and it is reproducible from published data &mdash; but lets the slope vary with how tight the period was, using the period's imbalance-to-day-ahead spread against its running median, clipped to a bounded range. The base level is then justified by the job it does: it is set at the level that makes deliberate imbalance unprofitable in backtest. That is an honest account of a free parameter, and it is a stronger defence than an uncalibrated constant.</p>
     </div>
 
@@ -807,7 +804,7 @@ tr:last-child td{border-bottom:0}
     <h2 class="sidehead">Two tracks</h2>
     <div class="s-body">
     <div class="prose">
-      <p>The clearest warning from HEFTCom is that the trading task deterred people: almost nobody entered who was not already working in energy. The fix is not to remove trading but to stop making it the entry requirement. The required column is a position, scored on captured value. The optional quantile columns are scored on pinball loss &mdash; the standard scoring rule for quantile forecasts, which rewards a band that is both narrow and honest &mdash; as a separate table. A forecaster enters with the columns they already understand, sees the value track running beside them, and can step across in a later round.</p>
+      <p>The clearest lesson from competitions that bundle forecasting with trading is that the trading task deters people: almost nobody enters who is not already working in energy. The fix is not to remove trading but to stop making it the entry requirement. The required column is a position, scored on captured value. The optional quantile columns are scored on pinball loss &mdash; the standard scoring rule for quantile forecasts, which rewards a band that is both narrow and honest &mdash; as a separate table. A forecaster enters with the columns they already understand, sees the value track running beside them, and can step across in a later round.</p>
       <p style="margin-top:14px">Both tracks then feed a third entrant. Every submission that clears the baseline is combined into one aggregate &mdash; a median position on the value track, and a quantile-by-quantile median on the forecast track &mdash; which is scored under its own name on the public leaderboard alongside everyone else. This is not decoration. Combined forecasts routinely beat almost every individual that goes into them, and the aggregate is scored on the same realised prices with the same impact term, so a participant who finishes above it has cleared a bar that most of the field did not. It is also the artefact a sponsor keeps after the edition closes, which is why it is built from the field rather than from the top ten.</p>
     </div>
 
@@ -853,7 +850,7 @@ tr:last-child td{border-bottom:0}
     <h2 class="sidehead">Calendar</h2>
     <div class="s-body">
     <div class="prose">
-      <p>HEFTCom ranked once, over the whole run, and teams who made an early error dropped out because the average was unrecoverable. Scoring in fortnightly rounds with points and a small prize per round, plus an overall table, keeps somebody in the game after a bad week and gives a sponsor something to watch every two weeks rather than once at the end.</p>
+      <p>Ranking once, over a whole run, loses people: a team that makes an early error drops out because the average is unrecoverable. Scoring in fortnightly rounds with points and a small prize per round, plus an overall table, keeps somebody in the game after a bad week and gives a sponsor something to watch every two weeks rather than once at the end.</p>
       <p>The qualifying round does double duty. It filters the field on historical periods before any live money is committed, and it identifies the teams worth funding: a modest participation grant to the teams that qualify, following the model used by the US power system operation competitions, buys real effort from people who would otherwise treat this as a weekend project.</p>
     </div>
 
@@ -897,7 +894,7 @@ tr:last-child td{border-bottom:0}
         <text class="tiny" x="524" y="134" text-anchor="middle">live delivery days &#8212; 2 weeks each, scored at T+2 on final imbalance prices</text>
         <text class="tiny" x="524" y="150" text-anchor="middle">overall table runs alongside and decides the main prize</text>
       </svg>
-      <figcaption><span class="fignum">Fig.&nbsp;5</span> <b>Twelve weeks live, six chances to win something.</b> The qualifying round runs on historical periods, so the infrastructure is proven before the first live gate closes &mdash; and it opens early, unlike HEFTCom's testing phase, which was ready too late to be used.</figcaption>
+      <figcaption><span class="fignum">Fig.&nbsp;5</span> <b>Twelve weeks live, six chances to win something.</b> The qualifying round runs on historical periods, so the infrastructure is proven before the first live gate closes &mdash; and it opens early enough to be used, rather than arriving as a testing phase nobody has time left to touch.</figcaption>
     </figure>
     </div>
   </section>
