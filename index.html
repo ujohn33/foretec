@@ -165,6 +165,21 @@ input[type=range]:focus-visible{outline:2px solid var(--blue); outline-offset:4p
 .notes-body p{font-size:.86rem; line-height:1.55; color:var(--ink2)}
 .notes-body b{color:var(--ink); font-weight:600}
 
+.crowd{
+  margin-top:30px; display:grid; grid-template-columns:auto 1fr; gap:22px; align-items:start;
+  background:var(--surface); border:1px solid var(--rule); border-left:2px solid var(--blue);
+  border-radius:3px; padding:24px 26px; box-shadow:var(--shadow)
+}
+.crowd-mark{width:52px; height:52px; border-radius:3px; background:var(--blue-soft); display:grid; place-items:center}
+.crowd-mark svg{width:34px; height:34px; display:block; overflow:visible}
+.crowd-mark .fan{fill:none; stroke:var(--blue); stroke-width:1.3; opacity:.5; stroke-linecap:round}
+.crowd-mark .dot{fill:var(--blue); opacity:.5}
+.crowd-mark .agg{fill:none; stroke:var(--blue-ink); stroke-width:2.4; stroke-linecap:round; opacity:1}
+.crowd-mark .node{fill:var(--blue-ink)}
+.crowd h3{margin-top:5px}
+.crowd .crowd-copy{margin-top:9px; font-size:.92rem; line-height:1.6; color:var(--ink2); max-width:62ch}
+@media(max-width:560px){ .crowd{grid-template-columns:1fr; gap:16px; padding:22px} }
+
 section{padding:78px 0; border-top:1px solid var(--rule)}
 .sec-head{margin-bottom:34px}
 
@@ -491,12 +506,27 @@ tr:last-child td{border-bottom:0}
       </div>
     </details>
     <p class="note" style="margin-top:26px"><a href="#/mechanics">Read the full mechanics</a> &mdash; gates, settlement formulas, the price-impact model, the data participants receive and the edition calendar.</p>
-    <details class="notes flat">
-      <summary>The crowd competes too</summary>
-      <div class="notes-body">
-        <p>Every submission is aggregated into a single meta-forecast that appears on the public leaderboard under its own name. Beating it is the result worth putting on a CV.</p>
+    <div class="crowd">
+      <div class="crowd-mark">
+        <svg viewBox="0 0 40 40" role="img" aria-label="Many individual submissions converging into one aggregated forecast">
+          <path class="fan" d="M6 7 C 15 7, 15 20, 22 20"/>
+          <path class="fan" d="M6 15 C 15 15, 16 20, 22 20"/>
+          <path class="fan" d="M6 25 C 15 25, 16 20, 22 20"/>
+          <path class="fan" d="M6 33 C 15 33, 15 20, 22 20"/>
+          <circle class="dot" cx="5" cy="7" r="1.5"/>
+          <circle class="dot" cx="5" cy="15" r="1.5"/>
+          <circle class="dot" cx="5" cy="25" r="1.5"/>
+          <circle class="dot" cx="5" cy="33" r="1.5"/>
+          <path class="agg" d="M22 20 H 37"/>
+          <circle class="node" cx="22" cy="20" r="3"/>
+        </svg>
       </div>
-    </details>
+      <div>
+        <p class="mono">The aggregate</p>
+        <h3>The crowd competes too</h3>
+        <p class="crowd-copy">Every submission is aggregated into a single meta-forecast that enters the leaderboard under its own name, scored on both tracks like any other participant. Crowds of this kind are hard to beat, so beating one is the result worth putting on a CV &mdash; and the aggregate itself is the output a sponsor keeps.</p>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -773,6 +803,7 @@ tr:last-child td{border-bottom:0}
     <div class="s-body">
     <div class="prose">
       <p>The clearest warning from HEFTCom is that the trading task deterred people: almost nobody entered who was not already working in energy. The fix is not to remove trading but to stop making it the entry requirement. The required column is a position, scored on captured value. The optional quantile columns are scored on pinball loss as a separate table. A forecaster enters with the columns they already understand, sees the value track running beside them, and can step across in a later round.</p>
+      <p style="margin-top:14px">Both tracks then feed a third entrant. Every submission that clears the baseline is combined into one aggregate &mdash; a median position on the value track, and a quantile-by-quantile median on the forecast track &mdash; which is scored under its own name on the public leaderboard alongside everyone else. This is not decoration. Combined forecasts routinely beat almost every individual that goes into them, and the aggregate is scored on the same realised prices with the same impact term, so a participant who finishes above it has cleared a bar that most of the field did not. It is also the artefact a sponsor keeps after the edition closes, which is why it is built from the field rather than from the top ten.</p>
     </div>
 
     <figure>
@@ -888,6 +919,7 @@ tr:last-child td{border-bottom:0}
           <tr><td>Impact scaling</td><td class="v">0.5&ndash;3&times;</td><td>Period spread against its running median, clipped, so tight periods bite and slack ones do not.</td></tr>
           <tr><td>Imbalance rule</td><td class="v">to confirm</td><td>One-price or two-price settlement, mirroring Energinet's live rule. Changes the optimal commitment entirely.</td></tr>
           <tr><td>Scoring lag</td><td class="v">T+2</td><td>Leaderboard waits for final imbalance prices rather than preliminary ones.</td></tr>
+          <tr><td>Aggregation rule</td><td class="v">median</td><td>Median position and quantile-wise median across submissions above baseline. Backtested against the mean and a trimmed mean on qualifying-round data before the first live gate.</td></tr>
           <tr><td>Round length</td><td class="v">2 weeks</td><td>Six rounds over a twelve-week edition, plus an overall table.</td></tr>
         </tbody>
       </table>
