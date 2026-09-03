@@ -16,7 +16,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=DM+Mono:wght@400;500&family=Inter:ital,wght@1,900&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Geist+Mono:wght@400;500&family=Inter:ital,wght@1,900&display=swap">
 
 <style>
 :root{
@@ -63,8 +63,8 @@ p{margin:0}
 a{color:var(--blue-ink)}
 
 .lede{font-size:1.12rem; color:var(--ink2); line-height:1.62}
-.num{font-family:"DM Mono",ui-monospace,monospace; font-variant-numeric:tabular-nums}
-.mono{font-family:"DM Mono",ui-monospace,monospace; font-size:.72rem; letter-spacing:.11em; text-transform:uppercase; color:var(--ink2)}
+.num{font-family:"Geist Mono",ui-monospace,monospace; font-variant-numeric:tabular-nums}
+.mono{font-family:"Geist Mono",ui-monospace,monospace; font-size:.72rem; letter-spacing:.11em; text-transform:uppercase; color:var(--ink2)}
 
 header.top{border-bottom:1px solid var(--rule); background:var(--ground); position:sticky; top:0; z-index:20}
 .top-in{display:flex; align-items:center; justify-content:space-between; gap:20px; height:78px}
@@ -91,7 +91,7 @@ header.top{border-bottom:1px solid var(--rule); background:var(--ground); positi
 .map .land{fill:none; stroke:var(--rule); stroke-width:1.4; stroke-linejoin:round}
 .map .zone{fill:var(--blue-soft); stroke:var(--blue); stroke-width:1.4; stroke-linejoin:round}
 .map .pin{fill:var(--amber)}
-.map text{font-family:"DM Mono",monospace; font-size:9px; letter-spacing:.08em; fill:var(--ink2)}
+.map text{font-family:"Geist Mono",monospace; font-size:9px; letter-spacing:.08em; fill:var(--ink2)}
 .map text.on{fill:var(--blue-ink)}
 .asset{display:flex; align-items:center; gap:13px}
 .asset svg{flex:0 0 auto; color:var(--blue)}
@@ -121,13 +121,13 @@ header.top{border-bottom:1px solid var(--rule); background:var(--ground); positi
 .chart .opt{stroke:var(--blue); stroke-width:1; stroke-dasharray:3 4; opacity:.65}
 .chart .cursor{stroke:var(--ink); stroke-width:1.25}
 .chart .band{fill:var(--green); opacity:.19}
-.chart text{font-family:"DM Mono",monospace; font-size:11px; fill:var(--ink2)}
+.chart text{font-family:"Geist Mono",monospace; font-size:11px; fill:var(--ink2)}
 .chart text.big{font-size:13px; fill:var(--ink)}
 .chart text.big.g{fill:var(--green)}
 
 .legend{
   margin:0 10px; display:flex; gap:22px; align-items:center;
-  font-family:"DM Mono",monospace; font-size:.74rem; color:var(--ink2);
+  font-family:"Geist Mono",monospace; font-size:.74rem; color:var(--ink2);
 }
 .legend i{display:inline-block; width:22px; margin-right:7px; vertical-align:middle}
 .legend .s-da{border-top:2.4px solid var(--blue)}
@@ -140,7 +140,7 @@ input[type=range]:focus-visible{outline:2px solid var(--blue); outline-offset:4p
 @media(max-width:800px){ .panel{grid-template-columns:1fr 1fr} .panel .verdict-cell{grid-column:1 / -1; border-left:0; border-top:1px solid var(--rule)} }
 .cell{padding:20px 24px; border-left:1px solid var(--rule)}
 .cell:first-child{border-left:0}
-.cell .big{font-family:"DM Mono",monospace; font-size:2.35rem; font-weight:500; letter-spacing:-.03em; line-height:1.05; display:block; margin-top:8px}
+.cell .big{font-family:"Geist Mono",monospace; font-size:2.35rem; font-weight:500; letter-spacing:-.03em; line-height:1.05; display:block; margin-top:8px}
 .cell .big.da{color:var(--blue-ink)}
 .cell .big.id{color:var(--green)}
 .cell small{display:block; margin-top:8px; color:var(--ink2); font-size:.83rem; line-height:1.45}
@@ -148,7 +148,7 @@ input[type=range]:focus-visible{outline:2px solid var(--blue); outline-offset:4p
 .notes{border-top:1px solid var(--rule); background:var(--raise)}
 .notes summary{
   padding:12px 28px; cursor:pointer; list-style:none;
-  font-family:"DM Mono",monospace; font-size:.72rem; letter-spacing:.11em;
+  font-family:"Geist Mono",monospace; font-size:.72rem; letter-spacing:.11em;
   text-transform:uppercase; color:var(--ink2);
 }
 .notes summary::-webkit-details-marker{display:none}
@@ -184,14 +184,14 @@ section{padding:78px 0; border-top:1px solid var(--rule)}
 .facts{display:grid; grid-template-columns:repeat(3,1fr); gap:26px}
 @media(max-width:760px){ .facts{grid-template-columns:1fr; gap:22px} }
 .fact hr{border:0; border-top:2px solid var(--rule); margin:0 0 14px}
-.fact .n{font-family:"DM Mono",monospace; font-size:1.9rem; font-weight:500; letter-spacing:-.02em; color:var(--blue-ink)}
+.fact .n{font-family:"Geist Mono",monospace; font-size:1.9rem; font-weight:500; letter-spacing:-.02em; color:var(--blue-ink)}
 .fact p{margin-top:8px; font-size:.94rem; color:var(--ink2); line-height:1.55}
 
 .vector{border:1px solid var(--rule); border-radius:3px; background:var(--surface); overflow:hidden}
 .vector-head{
   display:flex; justify-content:space-between; align-items:center; gap:16px; flex-wrap:wrap;
   padding:11px 18px; border-bottom:1px solid var(--rule); background:var(--raise);
-  font-family:"DM Mono",monospace; font-size:.68rem; letter-spacing:.1em;
+  font-family:"Geist Mono",monospace; font-size:.68rem; letter-spacing:.1em;
   text-transform:uppercase; color:var(--ink2);
 }
 .vh-key{display:flex; align-items:center; gap:6px}
@@ -201,7 +201,7 @@ section{padding:78px 0; border-top:1px solid var(--rule)}
 .vector-scroll{overflow-x:auto}
 .vector-grid{
   display:grid; grid-template-columns:repeat(6, minmax(84px, 1fr)); min-width:560px;
-  font-family:"DM Mono",monospace; font-size:.82rem; font-variant-numeric:tabular-nums;
+  font-family:"Geist Mono",monospace; font-size:.82rem; font-variant-numeric:tabular-nums;
 }
 .vc{padding:7px 18px; text-align:right; color:var(--ink2); border-bottom:1px solid var(--rule)}
 .vc.t{text-align:left; color:var(--ink2)}
@@ -216,7 +216,7 @@ ol.steps{list-style:none; padding:0; margin:0}
 ol.steps li{display:grid; grid-template-columns:58px 1fr; gap:20px; padding:22px 0; border-bottom:1px solid var(--rule)}
 ol.steps li:first-child{border-top:1px solid var(--rule)}
 @media(max-width:600px){ ol.steps li{grid-template-columns:40px 1fr; gap:14px} }
-ol.steps .st{font-family:"DM Mono",monospace; font-size:.78rem; color:var(--ink2); padding-top:4px}
+ol.steps .st{font-family:"Geist Mono",monospace; font-size:.78rem; color:var(--ink2); padding-top:4px}
 ol.steps p{margin-top:6px; color:var(--ink2); font-size:.95rem}
 
 .tiers{display:grid; grid-template-columns:repeat(3,1fr); gap:18px}
@@ -231,7 +231,7 @@ ol.steps p{margin-top:6px; color:var(--ink2); font-size:.95rem}
 .signup{background:var(--surface); border:1px solid var(--rule); border-radius:3px; padding:34px 30px; box-shadow:var(--shadow)}
 form{display:grid; gap:14px; margin-top:22px; max-width:520px}
 .field{display:grid; gap:6px}
-label{font-family:"DM Mono",monospace; font-size:.7rem; letter-spacing:.12em; text-transform:uppercase; color:var(--ink2)}
+label{font-family:"Geist Mono",monospace; font-size:.7rem; letter-spacing:.12em; text-transform:uppercase; color:var(--ink2)}
 input[type=email], select{font:inherit; font-size:.95rem; color:var(--ink); background:var(--ground); border:1px solid var(--rule); border-radius:2px; padding:11px 12px; width:100%}
 input[type=email]:focus, select:focus{outline:2px solid var(--blue); outline-offset:1px; border-color:var(--blue)}
 button{font:inherit; font-size:.93rem; font-weight:500; color:var(--ground); background:var(--ink); border:1px solid var(--ink); border-radius:2px; padding:12px 20px; cursor:pointer; justify-self:start}
@@ -250,7 +250,7 @@ footer{border-top:1px solid var(--rule); padding:36px 0 60px; color:var(--ink2);
 #page-mechanics section{padding:0; border-top:0}
 
 .dochead{padding:54px 0 30px; max-width:70ch}
-.docmeta{margin-top:12px; font-family:"DM Mono",ui-monospace,monospace; font-size:.74rem; letter-spacing:.06em; color:var(--ink2)}
+.docmeta{margin-top:12px; font-family:"Geist Mono",ui-monospace,monospace; font-size:.74rem; letter-spacing:.06em; color:var(--ink2)}
 .abstract{margin-top:22px; font-size:1.02rem; color:var(--ink2); line-height:1.7; padding-top:20px; border-top:1px solid var(--rule)}
 
 #page-mechanics .s{display:grid; grid-template-columns:180px 1fr; gap:0 48px; padding:34px 0; border-top:1px solid var(--rule)}
@@ -260,7 +260,7 @@ footer{border-top:1px solid var(--rule); padding:36px 0 60px; color:var(--ink2);
 .s-body p{max-width:66ch}
 @media(max-width:860px){
   #page-mechanics .s{grid-template-columns:1fr; gap:12px; padding:30px 0}
-  .sidehead{position:static; color:var(--ink2); font-family:"DM Mono",ui-monospace,monospace; font-size:.72rem; letter-spacing:.11em; text-transform:uppercase; font-weight:400}
+  .sidehead{position:static; color:var(--ink2); font-family:"Geist Mono",ui-monospace,monospace; font-size:.72rem; letter-spacing:.11em; text-transform:uppercase; font-weight:400}
 }
 
 figure{margin:8px 0 0; padding:0; overflow-x:auto}
@@ -270,14 +270,14 @@ figcaption{
   color:var(--ink2); font-size:.84rem; line-height:1.55; max-width:78ch;
 }
 figcaption b{color:var(--ink); font-weight:600}
-.fignum{font-family:"DM Mono",ui-monospace,monospace; font-size:.7rem; letter-spacing:.1em; text-transform:uppercase; color:var(--ink2); margin-right:8px; white-space:nowrap}
+.fignum{font-family:"Geist Mono",ui-monospace,monospace; font-size:.7rem; letter-spacing:.1em; text-transform:uppercase; color:var(--ink2); margin-right:8px; white-space:nowrap}
 
-svg .lab{font-family:"DM Mono",monospace; font-size:12px; fill:var(--ink2)}
+svg .lab{font-family:"Geist Mono",monospace; font-size:12px; fill:var(--ink2)}
 svg .lab.on{fill:var(--ink)}
 svg .lab.g{fill:var(--green)}
 svg .lab.a{fill:var(--amber)}
 svg .lab.b{fill:var(--blue-ink)}
-svg .tiny{font-family:"DM Mono",monospace; font-size:10.5px; fill:var(--ink2); letter-spacing:.06em}
+svg .tiny{font-family:"Geist Mono",monospace; font-size:10.5px; fill:var(--ink2); letter-spacing:.06em}
 svg .axis{stroke:var(--rule); stroke-width:1}
 svg .uband{fill:var(--blue); opacity:.15}
 svg .pos{stroke:var(--ink); stroke-width:2.6; fill:none; stroke-linejoin:round}
@@ -294,18 +294,18 @@ svg .flow{stroke:var(--ink2); stroke-width:1.4; fill:none}
 
 .rulebox{margin-top:4px; border-top:1px solid var(--rule)}
 .leg{display:grid; grid-template-columns:112px 1fr; gap:0 24px; padding:15px 0; border-bottom:1px solid var(--rule)}
-.leg .tag{font-family:"DM Mono",monospace; font-size:.71rem; letter-spacing:.1em; text-transform:uppercase; padding-top:4px}
+.leg .tag{font-family:"Geist Mono",monospace; font-size:.71rem; letter-spacing:.1em; text-transform:uppercase; padding-top:4px}
 .leg .tag.b{color:var(--blue-ink)} .leg .tag.g{color:var(--green)} .leg .tag.a{color:var(--amber)}
-.leg .f{font-family:"DM Mono",monospace; font-size:.88rem; color:var(--ink); letter-spacing:-.01em}
+.leg .f{font-family:"Geist Mono",monospace; font-size:.88rem; color:var(--ink); letter-spacing:-.01em}
 .leg .n{color:var(--ink2); font-size:.87rem; margin-top:6px; line-height:1.55; max-width:62ch}
 @media(max-width:640px){ .leg{grid-template-columns:1fr; gap:8px} }
 
 table{width:100%; border-collapse:collapse; margin-top:6px; font-size:.89rem}
 caption{text-align:left; color:var(--ink2); font-size:.84rem; padding-bottom:12px}
-th{text-align:left; font-family:"DM Mono",monospace; font-size:.67rem; letter-spacing:.11em; text-transform:uppercase; color:var(--ink2); font-weight:400; border-bottom:1px solid var(--rule); padding:0 16px 9px 0}
+th{text-align:left; font-family:"Geist Mono",monospace; font-size:.67rem; letter-spacing:.11em; text-transform:uppercase; color:var(--ink2); font-weight:400; border-bottom:1px solid var(--rule); padding:0 16px 9px 0}
 td{border-bottom:1px solid var(--rule); padding:11px 16px 11px 0; vertical-align:top; line-height:1.5}
 td:first-child{font-weight:600; white-space:nowrap}
-td.v{font-family:"DM Mono",monospace; font-size:.83rem; font-variant-numeric:tabular-nums; color:var(--blue-ink); white-space:nowrap}
+td.v{font-family:"Geist Mono",monospace; font-size:.83rem; font-variant-numeric:tabular-nums; color:var(--blue-ink); white-space:nowrap}
 tr:last-child td{border-bottom:0}
 .tablewrap{overflow-x:auto}
 
