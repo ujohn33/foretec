@@ -616,15 +616,15 @@ tr:last-child td{border-bottom:0}
   <div class="dochead">
     <h1>How an edition is scored</h1>
     <p class="docmeta">Foretec &middot; edition one, DK1 &middot; draft for discussion, September 2026</p>
-    <p class="abstract">A participant holds a notional 100 MW share of DK1 onshore wind. They commit a position ahead of delivery, revise it once as the forecast sharpens, and carry whatever is left as imbalance. The score is the share of perfect-foresight revenue they capture. Everything settles against published prices; the only modelled quantity is what a participant's own volume would have done to the price, because that is the one thing no dataset contains. Every choice below trades realism against the number of people who can enter, and this is where the line is drawn.</p>
+    <p class="abstract">A participant holds a notional 100 MW share of DK1 onshore wind. They commit a position ahead of delivery, revise it once as the forecast sharpens, and carry whatever is left as imbalance. The score is the share of perfect-foresight revenue captured. Everything settles against published prices; the only modelled quantity is what a participant's own volume would have done to the imbalance price, which no dataset contains. Each choice below trades realism against the size of the field it admits.</p>
   </div>
 
   <section class="s">
     <h2 class="sidehead">The asset</h2>
     <div class="s-body">
     <div class="prose">
-      <p>Running a competition on a single named wind farm makes the whole edition hostage to that one unit: an unannounced outage distorts every score in the period, and participants have to be told where to watch for it. Using a fixed share of DK1 aggregate onshore wind removes that entire failure mode. There is no single unit to trip, no outage feed to monitor, and the underlying series is published by Energinet without a licence negotiation. Managing a portfolio rather than one asset is also closer to what a desk actually does.</p>
-      <p>The cost is a little realism: zonal wind is smoother than a single farm, so forecast errors are smaller in percentage terms and the problem is marginally easier. That is an acceptable price for a first edition that has to start on schedule.</p>
+      <p>A single named wind farm makes the edition hostage to one unit: an unannounced outage distorts every score in the period, and participants have to be told where to watch for it. A fixed share of DK1 aggregate onshore wind removes that failure mode &mdash; nothing to trip, no outage feed to monitor, and the series is published by Energinet without a licence negotiation.</p>
+      <p>The cost is realism: zonal wind is smoother than a single farm, so percentage forecast errors are smaller and the problem is marginally easier.</p>
     </div>
     </div>
   </section>
@@ -633,8 +633,8 @@ tr:last-child td{border-bottom:0}
     <h2 class="sidehead">Submissions</h2>
     <div class="s-body">
     <div class="prose">
-      <p>Participants never place orders. For each delivery quarter they state the net position they want to hold after each gate, and the engine differences consecutive positions to recover the volume traded at that gate. Nobody models fills, queue priority or order lifetime, and someone who has never touched a power market can submit a valid entry as one column of numbers.</p>
-      <p>There are two gates. The day-ahead commitment closes at 12:00 on D&minus;1; a single intraday revision closes one hour before delivery. One revision captures most of the forecast-error decay between day-ahead and delivery &mdash; further gates add infrastructure and submission burden for very little additional measured skill, and can be added in a later edition if the field asks for them.</p>
+      <p>Participants never place orders. For each delivery quarter they state the net position they want to hold after each gate, and the engine differences consecutive positions to recover the volume traded. Fills, queue priority and order lifetime are not modelled, so a valid entry is one column of numbers.</p>
+      <p>Two gates: the day-ahead commitment closes at 12:00 on D&minus;1, a single intraday revision one hour before delivery. That one revision captures most of the forecast-error decay between them. Further gates add infrastructure and submission burden for little measured skill, and can come in a later edition.</p>
     </div>
 
     <figure>
@@ -681,7 +681,7 @@ tr:last-child td{border-bottom:0}
         <text class="lab on" x="760" y="364" text-anchor="middle">delivery</text>
         <text class="tiny" x="760" y="382" text-anchor="middle">settlement</text>
       </svg>
-      <figcaption><span class="fignum">Fig.&nbsp;1</span> <b>One delivery quarter, two decisions.</b> The shaded band is the participant's own forecast uncertainty, which narrows as delivery approaches; the solid line is the position they submitted. The engine never sees a trade &mdash; it differences the position at each gate and prices the difference. Everything left over at delivery is imbalance.</figcaption>
+      <figcaption><span class="fignum">Fig.&nbsp;1</span> <b>One delivery quarter, two decisions.</b> The shaded band is the participant's forecast uncertainty, narrowing as delivery approaches; the solid line is the position submitted. The engine never sees a trade &mdash; it differences the position at each gate and prices the difference. Whatever is left at delivery is imbalance.</figcaption>
     </figure>
     </div>
   </section>
@@ -690,7 +690,7 @@ tr:last-child td{border-bottom:0}
     <h2 class="sidehead">Settlement</h2>
     <div class="s-body">
     <div class="prose">
-      <p>Each leg gets the treatment its market actually justifies, and each assumption is stated rather than buried. Day-ahead is a uniform-price auction where a marginal volume genuinely does not move the clearing price, so that leg needs no correction and no apology. Intraday is continuous trading against an order book, so the published index is a mid that nobody transacts at: crossing the spread is a real cost and the edition charges it. Imbalance is the only leg where a participant's volume plausibly moves the price they themselves receive, and it is the only leg carrying a modelled term.</p>
+      <p>Day-ahead is a uniform-price auction: a marginal volume does not move the clearing price, so that leg takes no correction. Intraday is continuous trading against an order book, so the published index is a mid nobody transacts at, and crossing the spread is charged. Imbalance is the only leg where a participant's own volume plausibly moves the price they receive, and the only one carrying a modelled term.</p>
     </div>
 
     <div class="rulebox col">
@@ -698,14 +698,14 @@ tr:last-child td{border-bottom:0}
         <p class="tag b">Day-ahead</p>
         <div>
           <p class="f">x<sub>DA</sub> &times; &pi;<sub>DA</sub></p>
-          <p class="n">Published day-ahead price, no impact term. Since the move to 15-minute market time units the day-ahead product matches the imbalance settlement period, so all three legs sit on the same 96-row grid.</p>
+          <p class="n">Published day-ahead price, no impact term. Since the move to 15-minute market time units, all three legs sit on the same 96-row grid.</p>
         </div>
       </div>
       <div class="leg">
         <p class="tag g">Intraday</p>
         <div>
           <p class="f">(x<sub>ID</sub> &minus; x<sub>DA</sub>) &times; (&pi;<sub>ID</sub> &minus; sgn &middot; s/2)</p>
-          <p class="n">Published intraday index, with half the spread charged against the direction traded: you sell below the index and buy above it. Calibrate <i>s</i> from observed DK1 trade dispersion around the index, publish the number and the method.</p>
+          <p class="n">Published intraday index, with half the spread charged against the direction traded: you sell below the index and buy above it. Calibrate <i>s</i> from observed DK1 trade dispersion around the index; publish the number and the method.</p>
         </div>
       </div>
       <div class="leg">
@@ -757,7 +757,7 @@ tr:last-child td{border-bottom:0}
         <text class="tiny" x="768" y="286" text-anchor="middle">perfect foresight</text>
         <text class="tiny" x="768" y="302" text-anchor="middle">same spread, same &lambda;</text>
       </svg>
-      <figcaption><span class="fignum">Fig.&nbsp;2</span> <b>The score is a ratio, so the benchmark must play by the same rules.</b> Perfect foresight knows the generation and every price in advance, but still pays the intraday spread and the same impact term. Without that, the ratio is not bounded by anything meaningful and rewards exactly the behaviour the impact term exists to prevent.</figcaption>
+      <figcaption><span class="fignum">Fig.&nbsp;2</span> <b>The score is a ratio, so the benchmark plays by the same rules.</b> Perfect foresight knows the generation and every price in advance, but still pays the intraday spread and the same impact term. Without that, the ratio rewards exactly the behaviour the impact term exists to prevent.</figcaption>
     </figure>
     </div>
   </section>
@@ -766,9 +766,9 @@ tr:last-child td{border-bottom:0}
     <h2 class="sidehead">Price impact</h2>
     <div class="s-body">
     <div class="prose">
-      <p>The published imbalance price is the price that occurred given the system imbalance that actually happened &mdash; and that imbalance did not include the participant's notional wind. The data holds one realisation, not a function mapping volume to price, so there is no feed that fixes this. It is a missing counterfactual, not a missing dataset.</p>
-      <p>Leaving it out is not neutral either. Against a fixed price path with no impact, any period where the imbalance price beat day-ahead has an obvious answer: commit nothing and take the whole volume at imbalance. That is a corner solution, and a leaderboard full of them ranks people on a price read rather than on forecasting and decision skill. The usual patch is a single constant coefficient applied to every period, which prevents the corner solution but is rarely derived from anything, and is wrong in both directions: too soft in tight periods, too punitive in slack ones.</p>
-      <p>The proposal here keeps the linear form &mdash; it is cheap, it keeps every participant's score independent of every other participant's, and it is reproducible from published data &mdash; but lets the slope vary with how tight the period was, using the period's imbalance-to-day-ahead spread against its running median, clipped to a bounded range. The base level is then justified by the job it does: it is set at the level that makes deliberate imbalance unprofitable in backtest. That is an honest account of a free parameter, and it is a stronger defence than an uncalibrated constant.</p>
+      <p>The published imbalance price is the price that occurred given the system imbalance that actually happened, which did not include the participant's notional wind. The data holds one realisation, not a function from volume to price: a missing counterfactual, not a missing dataset.</p>
+      <p>Leaving it out is not neutral. Against a fixed price path, any period where the imbalance price beat day-ahead has one answer: commit nothing and take the whole volume at imbalance. A leaderboard of corner solutions ranks a price read rather than forecasting and decision skill. A single constant coefficient prevents that but is too soft in tight periods and too punitive in slack ones.</p>
+      <p>The proposal keeps the linear form &mdash; cheap, reproducible from published data, and it keeps each participant's score independent of the others &mdash; but varies the slope with the period's imbalance-to-day-ahead spread against its running median, clipped to a bounded range. The base level is set where deliberate imbalance stops being profitable in backtest.</p>
     </div>
 
     <figure>
@@ -795,7 +795,7 @@ tr:last-child td{border-bottom:0}
         <text class="tiny" x="702" y="140" text-anchor="middle">actual merit order</text>
         <text class="tiny" x="655" y="278" text-anchor="middle">your imbalance volume &#8594;</text>
       </svg>
-      <figcaption><span class="fignum">Fig.&nbsp;3</span> <b>A straight line whose slope moves with the period tracks the staircase without rebuilding it.</b> Re-clearing against the real stack means reconstructing every unit's bid-offer pairs, the operator's acceptance logic and the cash-out derivation &mdash; once per participant, per period. It also couples participants to each other, which turns the leaderboard into a game that has to be defended. Not for a first edition.</figcaption>
+      <figcaption><span class="fignum">Fig.&nbsp;3</span> <b>A straight line whose slope moves with the period tracks the staircase without rebuilding it.</b> Re-clearing against the real stack means reconstructing every unit's bid-offer pairs, the operator's acceptance logic and the cash-out derivation, once per participant per period &mdash; and it couples participants to each other. Not for a first edition.</figcaption>
     </figure>
     </div>
   </section>
@@ -804,8 +804,8 @@ tr:last-child td{border-bottom:0}
     <h2 class="sidehead">Two tracks</h2>
     <div class="s-body">
     <div class="prose">
-      <p>The clearest lesson from competitions that bundle forecasting with trading is that the trading task deters people: almost nobody enters who is not already working in energy. The fix is not to remove trading but to stop making it the entry requirement. The required column is a position, scored on captured value. The optional quantile columns are scored on pinball loss &mdash; the standard scoring rule for quantile forecasts, which rewards a band that is both narrow and honest &mdash; as a separate table. A forecaster enters with the columns they already understand, sees the value track running beside them, and can step across in a later round.</p>
-      <p style="margin-top:14px">Both tracks then feed a third entrant. Every submission that clears the baseline is combined into one aggregate &mdash; a median position on the value track, and a quantile-by-quantile median on the forecast track &mdash; which is scored under its own name on the public leaderboard alongside everyone else. This is not decoration. Combined forecasts routinely beat almost every individual that goes into them, and the aggregate is scored on the same realised prices with the same impact term, so a participant who finishes above it has cleared a bar that most of the field did not. It is also the artefact a sponsor keeps after the edition closes, which is why it is built from the field rather than from the top ten.</p>
+      <p>Bundling forecasting with trading deters entrants: almost nobody enters who is not already working in energy. The required column is a position, scored on captured value. The optional quantile columns are scored on pinball loss, the standard rule for quantile forecasts, as a separate table. A forecaster enters with the columns they already understand and can step across in a later round.</p>
+      <p style="margin-top:14px">Every submission above baseline is also combined into one aggregate &mdash; a median position on the value track, a quantile-wise median on the forecast track &mdash; scored under its own name on the public leaderboard alongside everyone else. Combined forecasts routinely beat almost every individual that goes into them, and the aggregate faces the same realised prices and the same impact term, so finishing above it is a result in itself.</p>
     </div>
 
     <figure>
@@ -841,7 +841,7 @@ tr:last-child td{border-bottom:0}
         <text class="lab on" x="766" y="131" text-anchor="middle">Meta-forecast</text>
         <text class="tiny" x="766" y="150" text-anchor="middle">aggregated field</text>
       </svg>
-      <figcaption><span class="fignum">Fig.&nbsp;4</span> <b>Two tables, one submission, no second registration.</b> Both tracks feed the aggregate that competes on the public leaderboard under its own name &mdash; beating the crowd is the result worth putting on a CV, and it is also the output a sponsor is buying.</figcaption>
+      <figcaption><span class="fignum">Fig.&nbsp;4</span> <b>Two tables, one submission, no second registration.</b> Both tracks feed the aggregate that competes on the public leaderboard under its own name.</figcaption>
     </figure>
     </div>
   </section>
@@ -850,8 +850,8 @@ tr:last-child td{border-bottom:0}
     <h2 class="sidehead">Calendar</h2>
     <div class="s-body">
     <div class="prose">
-      <p>Ranking once, over a whole run, loses people: a team that makes an early error drops out because the average is unrecoverable. Scoring in fortnightly rounds with points and a small prize per round, plus an overall table, keeps somebody in the game after a bad week and gives a sponsor something to watch every two weeks rather than once at the end.</p>
-      <p>The qualifying round does double duty. It filters the field on historical periods before any live money is committed, and it identifies the teams worth funding: a modest participation grant to the teams that qualify, following the model used by the US power system operation competitions, buys real effort from people who would otherwise treat this as a weekend project.</p>
+      <p>Ranking once over a whole run loses people: an early error makes the average unrecoverable and the team stops submitting. Fortnightly rounds with points and a small prize each, plus an overall table, keep a bad week from ending someone's edition and give a sponsor something to watch every two weeks.</p>
+      <p>The qualifying round filters the field on historical periods before the first live gate, and identifies the teams worth funding: a modest participation grant to those who qualify, as the US power system operation competitions do, buys effort from people who would otherwise treat this as a weekend project.</p>
     </div>
 
     <figure>
@@ -894,7 +894,7 @@ tr:last-child td{border-bottom:0}
         <text class="tiny" x="524" y="134" text-anchor="middle">live delivery days &#8212; 2 weeks each, scored at T+2 on final imbalance prices</text>
         <text class="tiny" x="524" y="150" text-anchor="middle">overall table runs alongside and decides the main prize</text>
       </svg>
-      <figcaption><span class="fignum">Fig.&nbsp;5</span> <b>Twelve weeks live, six chances to win something.</b> The qualifying round runs on historical periods, so the infrastructure is proven before the first live gate closes &mdash; and it opens early enough to be used, rather than arriving as a testing phase nobody has time left to touch.</figcaption>
+      <figcaption><span class="fignum">Fig.&nbsp;5</span> <b>Twelve weeks live, six chances to win something.</b> The qualifying round runs on historical periods, so the infrastructure is proven before the first live gate closes.</figcaption>
     </figure>
     </div>
   </section>
@@ -903,7 +903,7 @@ tr:last-child td{border-bottom:0}
     <h2 class="sidehead">Open parameters</h2>
     <div class="s-body">
     <div class="prose">
-      <p>Nothing below is a research question. Each is a value to be chosen, backtested on a season of DK1 data, and then published with the reasoning attached &mdash; which is the whole difference between a defensible design and a set of magic constants.</p>
+      <p>Nothing below is a research question. Each is a value to be chosen, backtested on a season of DK1 data, and published with its reasoning attached.</p>
     </div>
 
     <div class="tablewrap col">
