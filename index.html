@@ -626,8 +626,25 @@ tr:last-child td{border-bottom:0}
     <div class="prose">
       <p>Participants source their own inputs. Any data a participant can lawfully obtain is admissible &mdash; open weather forecasts, a commercial NWP subscription, satellite feeds, their own models &mdash; and none of it has to be declared. The platform publishes only what the score is computed from, so that every result can be reproduced: realised zonal generation and the day-ahead, intraday and imbalance prices for each settled period. A starter kit ships with it &mdash; a list of free sources, tutorials for pulling and aligning them, and a baseline model that produces a valid submission out of the box.</p>
       <p>A submission is one file per gate &mdash; one row per settlement period, 96 rows for a delivery day. Files arrive by API or upload, are timestamped server-side and locked at the gate. A gate with no file carries the previous position forward: miss the intraday revision and the day-ahead commitment stands, miss both and the whole volume settles as imbalance.</p>
+      <p>What the platform publishes is a record rather than a feed: the series each score was computed from, at the vintage used, so that any result can be recomputed line by line. It runs behind the market by design and is not where inputs should come from. Anything fresher is a fetch from the source, on the participant's own account.</p>
       <p>No price for the delivery day is known at the day-ahead gate. The auction clears after it closes and the result is published in the early afternoon of D&minus;1, so the first position is committed against a forecast of the price as well as of the generation. By the intraday gate the day-ahead price is settled and the intraday index for the period has started to form; the imbalance price is not known to anyone until after delivery.</p>
       <p>After delivery the engine waits for final imbalance prices, which is T+2, then scores every submission, updates both leaderboards and republishes the aggregate. Nothing is scored on preliminary prices, and no published score is revised.</p>
+    </div>
+
+    <div class="tablewrap" style="margin-top:6px">
+      <table>
+        <caption>What has settled by the day-ahead gate, 12:00 on D&minus;1</caption>
+        <thead>
+          <tr><th>Series</th><th>State at the gate</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Wind generation</td><td>Realised output published through the day by the operator, so the series runs to within about an hour of the gate.</td></tr>
+          <tr><td>Installed capacity</td><td>Current, and revised only as units commission or retire. It is the denominator of the scaling, not a forecasting problem.</td></tr>
+          <tr><td>Day-ahead price</td><td>Settled through D&minus;1. The price for delivery day D clears after this gate and publishes in the early afternoon.</td></tr>
+          <tr><td>Intraday index</td><td>Settled to the last traded period. Trading for D opens once the day-ahead result is out, so there is no index for D yet.</td></tr>
+          <tr><td>Imbalance price</td><td>Final through D&minus;3, two days behind delivery under the same rule the leaderboard waits for. Preliminary values publish sooner and are a participant's to use or ignore.</td></tr>
+        </tbody>
+      </table>
     </div>
 
     <div class="vector" style="margin-top:22px">
@@ -674,9 +691,9 @@ tr:last-child td{border-bottom:0}
         <text class="tiny" x="10" y="334">PARTICIPANT</text>
 
         <rect class="box" x="60" y="30" width="160" height="66" rx="2"/>
-        <text class="tiny" x="72" y="50">DAILY</text>
-        <text class="lab on" x="72" y="70">settled series</text>
-        <text class="tiny" x="72" y="86">prices and output</text>
+        <text class="tiny" x="72" y="50">DAILY, LAGGED</text>
+        <text class="lab on" x="72" y="70">scoring record</text>
+        <text class="tiny" x="72" y="86">settled prices, output</text>
         <path class="flow" d="M140 96 V154" marker-end="url(#arL)"/>
 
         <rect class="box" x="380" y="30" width="160" height="66" rx="2"/>
