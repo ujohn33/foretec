@@ -617,7 +617,7 @@ tr:last-child td{border-bottom:0}
   <div class="dochead">
     <h1>How an edition is scored</h1>
     <p class="docmeta">Foretec &middot; edition one, DK1 &middot; draft for discussion, September 2026</p>
-    <p class="abstract">A participant holds a notional 100 MW share of DK1 onshore wind. They commit a position ahead of delivery, revise it once as the forecast sharpens, and carry whatever is left as imbalance. The score is the share of perfect-foresight revenue captured. Everything settles against published prices; the only modelled quantity is what a participant's own volume would have done to the imbalance price, which no dataset contains. Each choice below trades realism against the size of the field it admits.</p>
+    <p class="abstract">A participant holds a notional 100 MW share of DK1 onshore wind, and in an edition that enables it a co-located battery. They commit a position ahead of delivery, revise it once as the forecast sharpens, and carry whatever is left as imbalance. The score is the share of perfect-foresight revenue captured. Everything settles against published prices; the only modelled quantity is what a participant's own volume would have done to the imbalance price, which no dataset contains. Each choice below trades realism against the size of the field it admits.</p>
   </div>
 
   <section class="s">
@@ -626,6 +626,7 @@ tr:last-child td{border-bottom:0}
     <div class="prose">
       <p>Participants source their own inputs. Any data a participant can lawfully obtain is admissible &mdash; open weather forecasts, a commercial NWP subscription, satellite feeds, their own models &mdash; and none of it has to be declared. The platform publishes only what the score is computed from, so that every result can be reproduced: realised zonal generation and the day-ahead, intraday and imbalance prices for each settled period. A starter kit ships with it &mdash; a list of free sources, tutorials for pulling and aligning them, and a baseline model that produces a valid submission out of the box.</p>
       <p>A submission is one file per gate &mdash; one row per settlement period, 96 rows for a delivery day. Files arrive by API or upload, are timestamped server-side and locked at the gate. A gate with no file carries the previous position forward: miss the intraday revision and the day-ahead commitment stands, miss both and the whole volume settles as imbalance.</p>
+      <p>No price for the delivery day is known at the day-ahead gate. The auction clears after it closes and the result is published in the early afternoon of D&minus;1, so the first position is committed against a forecast of the price as well as of the generation. By the intraday gate the day-ahead price is settled and the intraday index for the period has started to form; the imbalance price is not known to anyone until after delivery.</p>
       <p>After delivery the engine waits for final imbalance prices, which is T+2, then scores every submission, updates both leaderboards and republishes the aggregate. Nothing is scored on preliminary prices, and no published score is revised.</p>
     </div>
 
@@ -649,7 +650,7 @@ tr:last-child td{border-bottom:0}
           <span class="vc">25.2</span><span class="vc">40.3</span><span class="vc">57.9</span>
         </div>
       </div>
-      <p class="vector-cap">96 rows, one per settlement period. Only <b>position_mw</b> is required; the quantile columns feed the forecast track. The intraday file has the same shape.</p>
+      <p class="vector-cap">96 rows, one per settlement period. Only <b>position_mw</b> is required; the quantile columns feed the forecast track and <b>battery_mw</b> schedules the storage. The intraday file has the same shape.</p>
     </div>
 
     <figure>
@@ -679,9 +680,9 @@ tr:last-child td{border-bottom:0}
         <path class="flow" d="M140 96 V154" marker-end="url(#arL)"/>
 
         <rect class="box" x="380" y="30" width="160" height="66" rx="2"/>
-        <text class="tiny" x="392" y="50">D&minus;1 &rarr; D</text>
-        <text class="lab on" x="392" y="70">market prices</text>
-        <text class="tiny" x="392" y="86">as they publish</text>
+        <text class="tiny" x="392" y="50">AFTER THE GATE</text>
+        <text class="lab on" x="392" y="70">day-ahead result</text>
+        <text class="tiny" x="392" y="86">then intraday index</text>
         <path class="flow" d="M460 96 V154" marker-end="url(#arL)"/>
 
         <rect class="box" x="710" y="30" width="160" height="66" rx="2"/>
@@ -708,7 +709,7 @@ tr:last-child td{border-bottom:0}
         <text class="tiny" x="532" y="280">new position only</text>
         <path class="flow" d="M600 224 V174" marker-end="url(#arL)"/>
       </svg>
-      <figcaption><span class="fignum">Fig.&nbsp;1</span> <b>One delivery day.</b> Participants bring their own inputs; the platform publishes the series the score is computed from and, once final prices are in, the scores themselves. Both gates lock server-side. Everything below the axis is what a participant produces &mdash; two files, and whatever they build to write them.</figcaption>
+      <figcaption><span class="fignum">Fig.&nbsp;1</span> <b>One delivery day, and what is known when.</b> Participants bring their own inputs; the platform publishes the series the score is computed from and, once final prices are in, the scores themselves. The day-ahead price arrives <i>after</i> the day-ahead gate has closed, so the first commitment is made blind to it. Both gates lock server-side.</figcaption>
     </figure>
     </div>
   </section>
@@ -719,6 +720,45 @@ tr:last-child td{border-bottom:0}
     <div class="prose">
       <p>The asset is a notional 100 MW share of DK1 aggregate onshore wind, the same share for every participant for the whole edition. Realised generation in a settlement period is the zonal series scaled to that nameplate, y<sub>t</sub> = 100 &times; W<sub>t</sub> / C<sub>t</sub>, where W<sub>t</sub> is DK1 onshore wind production for the period and C<sub>t</sub> the installed onshore capacity in force. Both series are published by Energinet.</p>
       <p>No single unit stands behind the position, so there is no outage to track and no unit availability to model. A zonal series is also smoother than one farm: percentage forecast errors are smaller than a single-asset edition would produce.</p>
+    </div>
+    </div>
+  </section>
+
+  <section class="s">
+    <h2 class="sidehead">Storage</h2>
+    <div class="s-body">
+    <div class="prose">
+      <p>An edition may attach a battery to the same notional site; the DK1 proposal is 20 MW / 40 MWh. It belongs to every participant equally. The <b>battery_mw</b> column is what is optional: omit it and the battery stands idle, which is a valid entry and a scoring choice like any other.</p>
+      <p>The column is a schedule, one value per settlement period, discharge positive and charge negative. It does not add a second position. <b>position_mw</b> remains the whole commitment for the period, and the battery changes what is behind it: what is physically delivered is the realised wind plus the battery schedule, and imbalance is measured from that.</p>
+    </div>
+
+    <div class="rulebox">
+      <div class="leg">
+        <p class="tag b">Delivery</p>
+        <div>
+          <p class="f">y<sub>t</sub> + b<sub>t</sub></p>
+          <p class="n">Realised wind plus the battery schedule. Imbalance for the period is this less the committed position, and settles exactly as it does without a battery.</p>
+        </div>
+      </div>
+      <div class="leg">
+        <p class="tag g">State of charge</p>
+        <div>
+          <p class="f">e<sub>t+1</sub> = e<sub>t</sub> &minus; &Delta;t &middot; ( b<sub>t</sub><sup>+</sup> / &eta; + &eta; &middot; b<sub>t</sub><sup>&minus;</sup> )</p>
+          <p class="n">&Delta;t is a quarter hour, b<sup>+</sup> the discharge and b<sup>&minus;</sup> the charge part of the schedule, &eta; the one-way efficiency. Bounded by 0 &le; e &le; 40 MWh and |b| &le; 20 MW.</p>
+        </div>
+      </div>
+      <div class="leg">
+        <p class="tag a">Cycle cost</p>
+        <div>
+          <p class="f">c &middot; &Delta;t &middot; b<sub>t</sub><sup>+</sup></p>
+          <p class="n">Charged on energy discharged, so a schedule that cycles on noise pays for it. <i>c</i> is calibrated from the amortised cell cost of a battery of this size.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="prose" style="margin-top:20px">
+      <p>An infeasible schedule is clipped rather than rejected: the engine bounds each value by the power limit and by the energy actually in the battery, settles the clipped schedule, and returns it with the score. Nothing about that depends on other participants, so it stays reproducible from published data.</p>
+      <p>The battery starts each delivery day at 20 MWh. Whatever is left above or below that at midnight is settled at the day's mean day-ahead price, so energy cannot be carried across days for free and a full battery at midnight is not wasted. The perfect-foresight benchmark dispatches the same battery under the same constraints and pays the same cycle cost &mdash; otherwise the ratio would reward storage rather than measure the use made of it.</p>
     </div>
     </div>
   </section>
@@ -1015,6 +1055,9 @@ tr:last-child td{border-bottom:0}
           <tr><td>Impact scaling</td><td class="v">0.5&ndash;3&times;</td><td>Period spread against its running median, clipped, so tight periods bite and slack ones do not.</td></tr>
           <tr><td>Imbalance rule</td><td class="v">to confirm</td><td>One-price or two-price settlement, mirroring Energinet's live rule. Changes the optimal commitment entirely.</td></tr>
           <tr><td>Scoring lag</td><td class="v">T+2</td><td>Leaderboard waits for final imbalance prices rather than preliminary ones.</td></tr>
+          <tr><td>Storage</td><td class="v">20 MW / 40 MWh</td><td>Two hours at full power, the shape most often built alongside wind in the zone. Optional to schedule, identical for everyone.</td></tr>
+          <tr><td>Round-trip efficiency</td><td class="v">90&nbsp;%</td><td>Split evenly across charge and discharge. Bounds and losses are checked by the engine, not by the participant.</td></tr>
+          <tr><td>Cycle cost</td><td class="v">c</td><td>Per MWh discharged, from the amortised cell cost of a battery this size. Set high enough that cycling on forecast noise does not pay.</td></tr>
           <tr><td>Aggregation rule</td><td class="v">median</td><td>Median position and quantile-wise median across submissions above baseline. Backtested against the mean and a trimmed mean on qualifying-round data before the first live gate.</td></tr>
           <tr><td>Round length</td><td class="v">2 weeks</td><td>Six rounds over a twelve-week edition, plus an overall table.</td></tr>
         </tbody>
