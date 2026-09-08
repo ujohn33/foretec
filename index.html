@@ -451,7 +451,7 @@ tr:last-child td{border-bottom:0}
         <div class="st">01</div>
         <div>
           <h3>Qualify</h3>
-          <p>Participants receive a curated dataset built from open grid data and a working baseline model. A qualifying round on historical periods filters the field and opens the leaderboard.</p>
+          <p>Participants bring their own data. The platform publishes the settled series every score is computed from, a baseline model and tutorials for the free sources. A qualifying round on historical periods filters the field and opens the leaderboard.</p>
         </div>
       </li>
       <li>
@@ -504,7 +504,7 @@ tr:last-child td{border-bottom:0}
 
       </div>
     </details>
-    <p class="note" style="margin-top:26px"><a href="#/mechanics">Read the full mechanics</a> &mdash; gates, settlement formulas, the price-impact model, the data participants receive and the edition calendar.</p>
+    <p class="note" style="margin-top:26px"><a href="#/mechanics">Read the full mechanics</a> &mdash; gates, settlement formulas, the price-impact model, what the platform publishes and the edition calendar.</p>
     <div class="crowd">
       <div class="crowd-mark">
         <svg viewBox="0 8 40 27" role="img" aria-label="A crowd of participants">
@@ -587,7 +587,7 @@ tr:last-child td{border-bottom:0}
   <div class="wrap">
     <div class="signup">
       <h2 style="max-width:24ch">Find out when the first edition opens.</h2>
-      <p class="lede" style="margin-top:14px; max-width:52ch">Occasional updates on dates, the dataset, sponsorship and results. No more than one email a month, and nothing else ever.</p>
+      <p class="lede" style="margin-top:14px; max-width:52ch">Occasional updates on dates, the edition spec, sponsorship and results. No more than one email a month, and nothing else ever.</p>
       <form id="signup">
         <div class="field">
           <label for="email">Email</label>
@@ -624,7 +624,7 @@ tr:last-child td{border-bottom:0}
     <h2 class="sidehead">The loop</h2>
     <div class="s-body">
     <div class="prose">
-      <p>Every participant receives the same dataset before the edition opens: numerical weather forecasts for the zone at each issue time, day-ahead, intraday and imbalance prices, realised aggregate generation up to the last settled day, and a baseline model that produces a valid submission out of the box. Every series in it is public, so nothing stops a participant publishing their own work on top of it.</p>
+      <p>Participants source their own inputs. Any data a participant can lawfully obtain is admissible &mdash; open weather forecasts, a commercial NWP subscription, satellite feeds, their own models &mdash; and none of it has to be declared. The platform publishes only what the score is computed from, so that every result can be reproduced: realised zonal generation and the day-ahead, intraday and imbalance prices for each settled period. A starter kit ships with it &mdash; a list of free sources, tutorials for pulling and aligning them, and a baseline model that produces a valid submission out of the box.</p>
       <p>A submission is one file per gate &mdash; one row per settlement period, 96 rows for a delivery day. Files arrive by API or upload, are timestamped server-side and locked at the gate. A gate with no file carries the previous position forward: miss the intraday revision and the day-ahead commitment stands, miss both and the whole volume settles as imbalance.</p>
       <p>After delivery the engine waits for final imbalance prices, which is T+2, then scores every submission, updates both leaderboards and republishes the aggregate. Nothing is scored on preliminary prices, and no published score is revised.</p>
     </div>
@@ -653,56 +653,62 @@ tr:last-child td{border-bottom:0}
     </div>
 
     <figure>
-      <svg viewBox="0 0 900 320" role="img" aria-label="Timeline of one delivery day: the platform publishes the dataset and later the scores, the participant returns one file at each of the two gates">
+      <svg viewBox="0 0 900 340" role="img" aria-label="Timeline of one delivery day: participants source their own inputs and return one file at each of the two gates, while the platform publishes the settled series and, at T plus two, the scores">
         <defs>
           <marker id="arL" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
             <path d="M0 0 L10 5 L0 10 z" fill="var(--ink2)"/>
           </marker>
         </defs>
 
-        <line class="gline" x1="350" y1="20" x2="350" y2="306"/>
-        <line class="gline" x1="620" y1="20" x2="620" y2="306"/>
+        <line class="gline" x1="330" y1="16" x2="330" y2="302"/>
+        <line class="gline" x1="600" y1="16" x2="600" y2="302"/>
 
-        <line class="axis" x1="150" y1="168" x2="880" y2="168"/>
-        <circle cx="350" cy="168" r="4.5" class="barB"/>
-        <circle cx="620" cy="168" r="4.5" class="barB"/>
-        <circle cx="720" cy="168" r="4.5" fill="var(--surface)" stroke="var(--ink2)" stroke-width="1.4"/>
-        <text class="tiny" x="720" y="192" text-anchor="middle">delivery</text>
+        <line class="axis" x1="20" y1="164" x2="880" y2="164"/>
+        <circle cx="330" cy="164" r="4.5" class="barB"/>
+        <circle cx="600" cy="164" r="4.5" class="barB"/>
+        <circle cx="690" cy="164" r="4.5" fill="var(--surface)" stroke="var(--ink2)" stroke-width="1.4"/>
+        <text class="tiny" x="690" y="188" text-anchor="middle">delivery</text>
 
-        <text class="tiny" x="125" y="72" text-anchor="end">PLATFORM</text>
-        <text class="tiny" x="125" y="266" text-anchor="end">PARTICIPANT</text>
+        <text class="tiny" x="10" y="16">PLATFORM</text>
+        <text class="tiny" x="10" y="334">PARTICIPANT</text>
 
-        <rect class="box" x="135" y="34" width="160" height="66" rx="2"/>
-        <text class="tiny" x="147" y="54">D&minus;1 MORNING</text>
-        <text class="lab on" x="147" y="74">curated dataset</text>
-        <text class="tiny" x="147" y="90">NWP, prices, output</text>
-        <path class="flow" d="M215 100 V158" marker-end="url(#arL)"/>
+        <rect class="box" x="60" y="30" width="160" height="66" rx="2"/>
+        <text class="tiny" x="72" y="50">DAILY</text>
+        <text class="lab on" x="72" y="70">settled series</text>
+        <text class="tiny" x="72" y="86">prices and output</text>
+        <path class="flow" d="M140 96 V154" marker-end="url(#arL)"/>
 
-        <rect class="box" x="410" y="34" width="160" height="66" rx="2"/>
-        <text class="tiny" x="422" y="54">D&minus;1 &rarr; D</text>
-        <text class="lab on" x="422" y="74">refreshed NWP</text>
-        <text class="tiny" x="422" y="90">and updated prices</text>
-        <path class="flow" d="M490 100 V158" marker-end="url(#arL)"/>
+        <rect class="box" x="380" y="30" width="160" height="66" rx="2"/>
+        <text class="tiny" x="392" y="50">D&minus;1 &rarr; D</text>
+        <text class="lab on" x="392" y="70">market prices</text>
+        <text class="tiny" x="392" y="86">as they publish</text>
+        <path class="flow" d="M460 96 V154" marker-end="url(#arL)"/>
 
-        <rect class="box" x="720" y="34" width="160" height="66" rx="2"/>
-        <text class="tiny" x="732" y="54">T+2</text>
-        <text class="lab on" x="732" y="74">scores published</text>
-        <text class="tiny" x="732" y="90">both leaderboards</text>
-        <path class="flow" d="M800 100 V158" marker-end="url(#arL)"/>
+        <rect class="box" x="710" y="30" width="160" height="66" rx="2"/>
+        <text class="tiny" x="722" y="50">T+2</text>
+        <text class="lab on" x="722" y="70">scores published</text>
+        <text class="tiny" x="722" y="86">both leaderboards</text>
+        <path class="flow" d="M790 96 V154" marker-end="url(#arL)"/>
 
-        <rect class="boxq" x="270" y="228" width="160" height="66" rx="2"/>
-        <text class="tiny" x="282" y="248">12:00 D&minus;1 &mdash; GATE</text>
-        <text class="lab on" x="282" y="268">day-ahead file</text>
-        <text class="tiny" x="282" y="284">position + quantiles</text>
-        <path class="flow" d="M350 228 V178" marker-end="url(#arL)"/>
+        <rect x="20" y="224" width="150" height="66" rx="2" fill="none" stroke="var(--rule)" stroke-width="1.2" stroke-dasharray="4 4"/>
+        <text class="tiny" x="32" y="244">ANY SOURCE</text>
+        <text class="lab on" x="32" y="264">own inputs</text>
+        <text class="tiny" x="32" y="280">weather, models</text>
+        <path class="flow" d="M170 257 H244" marker-end="url(#arL)"/>
 
-        <rect class="boxq" x="540" y="228" width="160" height="66" rx="2"/>
-        <text class="tiny" x="552" y="248">H&minus;1 &mdash; GATE</text>
-        <text class="lab on" x="552" y="268">intraday revision</text>
-        <text class="tiny" x="552" y="284">new position only</text>
-        <path class="flow" d="M620 228 V178" marker-end="url(#arL)"/>
+        <rect class="boxq" x="250" y="224" width="160" height="66" rx="2"/>
+        <text class="tiny" x="262" y="244">12:00 D&minus;1 &mdash; GATE</text>
+        <text class="lab on" x="262" y="264">day-ahead file</text>
+        <text class="tiny" x="262" y="280">position + quantiles</text>
+        <path class="flow" d="M330 224 V174" marker-end="url(#arL)"/>
+
+        <rect class="boxq" x="520" y="224" width="160" height="66" rx="2"/>
+        <text class="tiny" x="532" y="244">H&minus;1 &mdash; GATE</text>
+        <text class="lab on" x="532" y="264">intraday revision</text>
+        <text class="tiny" x="532" y="280">new position only</text>
+        <path class="flow" d="M600 224 V174" marker-end="url(#arL)"/>
       </svg>
-      <figcaption><span class="fignum">Fig.&nbsp;1</span> <b>One delivery day, five exchanges.</b> The platform publishes the dataset, refreshes it as the forecast sharpens, and returns the scores once final prices are in; the participant returns one file at each gate. Both gates lock server-side, and everything below the axis is the only thing a participant has to produce.</figcaption>
+      <figcaption><span class="fignum">Fig.&nbsp;1</span> <b>One delivery day.</b> Participants bring their own inputs; the platform publishes the series the score is computed from and, once final prices are in, the scores themselves. Both gates lock server-side. Everything below the axis is what a participant produces &mdash; two files, and whatever they build to write them.</figcaption>
     </figure>
     </div>
   </section>
@@ -711,8 +717,8 @@ tr:last-child td{border-bottom:0}
     <h2 class="sidehead">The asset</h2>
     <div class="s-body">
     <div class="prose">
-      <p>A single named wind farm makes the edition hostage to one unit: an unannounced outage distorts every score in the period, and participants have to be told where to watch for it. A fixed share of DK1 aggregate onshore wind removes that failure mode &mdash; nothing to trip, no outage feed to monitor, and the series is published by Energinet without a licence negotiation.</p>
-      <p>The cost is realism: zonal wind is smoother than a single farm, so percentage forecast errors are smaller and the problem is marginally easier.</p>
+      <p>The asset is a notional 100 MW share of DK1 aggregate onshore wind, the same share for every participant for the whole edition. Realised generation in a settlement period is the zonal series scaled to that nameplate, y<sub>t</sub> = 100 &times; W<sub>t</sub> / C<sub>t</sub>, where W<sub>t</sub> is DK1 onshore wind production for the period and C<sub>t</sub> the installed onshore capacity in force. Both series are published by Energinet.</p>
+      <p>No single unit stands behind the position, so there is no outage to track and no unit availability to model. A zonal series is also smoother than one farm: percentage forecast errors are smaller than a single-asset edition would produce.</p>
     </div>
     </div>
   </section>
