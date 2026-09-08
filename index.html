@@ -258,6 +258,7 @@ footer{border-top:1px solid var(--rule); padding:36px 0 60px; color:var(--ink2);
 .s-body{display:grid; gap:16px; min-width:0}
 .s-body .prose{display:grid; gap:15px}
 .s-body p{max-width:66ch}
+.s-body .vector-cap{max-width:none}
 @media(max-width:860px){
   #page-mechanics .s{grid-template-columns:1fr; gap:12px; padding:30px 0}
   .sidehead{position:static; color:var(--ink2); font-family:"Geist Mono",ui-monospace,monospace; font-size:.72rem; letter-spacing:.11em; text-transform:uppercase; font-weight:400}
@@ -620,6 +621,93 @@ tr:last-child td{border-bottom:0}
   </div>
 
   <section class="s">
+    <h2 class="sidehead">The loop</h2>
+    <div class="s-body">
+    <div class="prose">
+      <p>Every participant receives the same dataset before the edition opens: numerical weather forecasts for the zone at each issue time, day-ahead, intraday and imbalance prices, realised aggregate generation up to the last settled day, and a baseline model that produces a valid submission out of the box. Every series in it is public, so nothing stops a participant publishing their own work on top of it.</p>
+      <p>A submission is one file per gate &mdash; one row per settlement period, 96 rows for a delivery day. Files arrive by API or upload, are timestamped server-side and locked at the gate. A gate with no file carries the previous position forward: miss the intraday revision and the day-ahead commitment stands, miss both and the whole volume settles as imbalance.</p>
+      <p>After delivery the engine waits for final imbalance prices, which is T+2, then scores every submission, updates both leaderboards and republishes the aggregate. Nothing is scored on preliminary prices, and no published score is revised.</p>
+    </div>
+
+    <div class="vector" style="margin-top:22px">
+      <div class="vector-head">
+        <span>submission &mdash; edition DK1&middot;01 &mdash; gate DAY-AHEAD</span>
+        <span class="vh-key"><i class="k-req"></i>required <i class="k-opt"></i>optional</span>
+      </div>
+      <div class="vector-scroll">
+        <div class="vector-grid">
+          <span class="vc h t">period</span>
+          <span class="vc h req">position_mw</span>
+          <span class="vc h">battery_mw</span>
+          <span class="vc h">p10</span>
+          <span class="vc h">p50</span>
+          <span class="vc h">p90</span>
+          <span class="vc t">00:00</span><span class="vc req">41.5</span><span class="vc">&minus;2.0</span><span class="vc">28.3</span><span class="vc">43.1</span><span class="vc">61.0</span><span class="vc t">00:15</span><span class="vc req">43.0</span><span class="vc">&minus;2.0</span><span class="vc">29.6</span><span class="vc">44.7</span><span class="vc">62.8</span><span class="vc t">00:30</span><span class="vc req">44.2</span><span class="vc">0.0</span><span class="vc">30.9</span><span class="vc">46.0</span><span class="vc">64.1</span><span class="vc t">00:45</span><span class="vc req">45.1</span><span class="vc">+3.5</span><span class="vc">31.4</span><span class="vc">47.2</span><span class="vc">65.7</span><span class="vc t">01:00</span><span class="vc req">46.8</span><span class="vc">+3.5</span><span class="vc">32.7</span><span class="vc">48.9</span><span class="vc">67.2</span>
+          <span class="vc t el">&vellip;</span><span class="vc req el">&vellip;</span><span class="vc el">&vellip;</span>
+          <span class="vc el">&vellip;</span><span class="vc el">&vellip;</span><span class="vc el">&vellip;</span>
+          <span class="vc t">23:45</span><span class="vc req">38.6</span><span class="vc">+1.0</span>
+          <span class="vc">25.2</span><span class="vc">40.3</span><span class="vc">57.9</span>
+        </div>
+      </div>
+      <p class="vector-cap">96 rows, one per settlement period. Only <b>position_mw</b> is required; the quantile columns feed the forecast track. The intraday file has the same shape.</p>
+    </div>
+
+    <figure>
+      <svg viewBox="0 0 900 320" role="img" aria-label="Timeline of one delivery day: the platform publishes the dataset and later the scores, the participant returns one file at each of the two gates">
+        <defs>
+          <marker id="arL" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M0 0 L10 5 L0 10 z" fill="var(--ink2)"/>
+          </marker>
+        </defs>
+
+        <line class="gline" x1="350" y1="20" x2="350" y2="306"/>
+        <line class="gline" x1="620" y1="20" x2="620" y2="306"/>
+
+        <line class="axis" x1="150" y1="168" x2="880" y2="168"/>
+        <circle cx="350" cy="168" r="4.5" class="barB"/>
+        <circle cx="620" cy="168" r="4.5" class="barB"/>
+        <circle cx="720" cy="168" r="4.5" fill="var(--surface)" stroke="var(--ink2)" stroke-width="1.4"/>
+        <text class="tiny" x="720" y="192" text-anchor="middle">delivery</text>
+
+        <text class="tiny" x="125" y="72" text-anchor="end">PLATFORM</text>
+        <text class="tiny" x="125" y="266" text-anchor="end">PARTICIPANT</text>
+
+        <rect class="box" x="135" y="34" width="160" height="66" rx="2"/>
+        <text class="tiny" x="147" y="54">D&minus;1 MORNING</text>
+        <text class="lab on" x="147" y="74">curated dataset</text>
+        <text class="tiny" x="147" y="90">NWP, prices, output</text>
+        <path class="flow" d="M215 100 V158" marker-end="url(#arL)"/>
+
+        <rect class="box" x="410" y="34" width="160" height="66" rx="2"/>
+        <text class="tiny" x="422" y="54">D&minus;1 &rarr; D</text>
+        <text class="lab on" x="422" y="74">refreshed NWP</text>
+        <text class="tiny" x="422" y="90">and updated prices</text>
+        <path class="flow" d="M490 100 V158" marker-end="url(#arL)"/>
+
+        <rect class="box" x="720" y="34" width="160" height="66" rx="2"/>
+        <text class="tiny" x="732" y="54">T+2</text>
+        <text class="lab on" x="732" y="74">scores published</text>
+        <text class="tiny" x="732" y="90">both leaderboards</text>
+        <path class="flow" d="M800 100 V158" marker-end="url(#arL)"/>
+
+        <rect class="boxq" x="270" y="228" width="160" height="66" rx="2"/>
+        <text class="tiny" x="282" y="248">12:00 D&minus;1 &mdash; GATE</text>
+        <text class="lab on" x="282" y="268">day-ahead file</text>
+        <text class="tiny" x="282" y="284">position + quantiles</text>
+        <path class="flow" d="M350 228 V178" marker-end="url(#arL)"/>
+
+        <rect class="boxq" x="540" y="228" width="160" height="66" rx="2"/>
+        <text class="tiny" x="552" y="248">H&minus;1 &mdash; GATE</text>
+        <text class="lab on" x="552" y="268">intraday revision</text>
+        <text class="tiny" x="552" y="284">new position only</text>
+        <path class="flow" d="M620 228 V178" marker-end="url(#arL)"/>
+      </svg>
+      <figcaption><span class="fignum">Fig.&nbsp;1</span> <b>One delivery day, five exchanges.</b> The platform publishes the dataset, refreshes it as the forecast sharpens, and returns the scores once final prices are in; the participant returns one file at each gate. Both gates lock server-side, and everything below the axis is the only thing a participant has to produce.</figcaption>
+    </figure>
+    </div>
+  </section>
+
+  <section class="s">
     <h2 class="sidehead">The asset</h2>
     <div class="s-body">
     <div class="prose">
@@ -681,7 +769,7 @@ tr:last-child td{border-bottom:0}
         <text class="lab on" x="760" y="364" text-anchor="middle">delivery</text>
         <text class="tiny" x="760" y="382" text-anchor="middle">settlement</text>
       </svg>
-      <figcaption><span class="fignum">Fig.&nbsp;1</span> <b>One delivery quarter, two decisions.</b> The shaded band is the participant's forecast uncertainty, narrowing as delivery approaches; the solid line is the position submitted. The engine never sees a trade &mdash; it differences the position at each gate and prices the difference. Whatever is left at delivery is imbalance.</figcaption>
+      <figcaption><span class="fignum">Fig.&nbsp;2</span> <b>One delivery quarter, two decisions.</b> The shaded band is the participant's forecast uncertainty, narrowing as delivery approaches; the solid line is the position submitted. The engine never sees a trade &mdash; it differences the position at each gate and prices the difference. Whatever is left at delivery is imbalance.</figcaption>
     </figure>
     </div>
   </section>
@@ -757,7 +845,7 @@ tr:last-child td{border-bottom:0}
         <text class="tiny" x="768" y="286" text-anchor="middle">perfect foresight</text>
         <text class="tiny" x="768" y="302" text-anchor="middle">same spread, same &lambda;</text>
       </svg>
-      <figcaption><span class="fignum">Fig.&nbsp;2</span> <b>The score is a ratio, so the benchmark plays by the same rules.</b> Perfect foresight knows the generation and every price in advance, but still pays the intraday spread and the same impact term. Without that, the ratio rewards exactly the behaviour the impact term exists to prevent.</figcaption>
+      <figcaption><span class="fignum">Fig.&nbsp;3</span> <b>The score is a ratio, so the benchmark plays by the same rules.</b> Perfect foresight knows the generation and every price in advance, but still pays the intraday spread and the same impact term. Without that, the ratio rewards exactly the behaviour the impact term exists to prevent.</figcaption>
     </figure>
     </div>
   </section>
@@ -795,7 +883,7 @@ tr:last-child td{border-bottom:0}
         <text class="tiny" x="702" y="140" text-anchor="middle">actual merit order</text>
         <text class="tiny" x="655" y="278" text-anchor="middle">your imbalance volume &#8594;</text>
       </svg>
-      <figcaption><span class="fignum">Fig.&nbsp;3</span> <b>A straight line whose slope moves with the period tracks the staircase without rebuilding it.</b> Re-clearing against the real stack means reconstructing every unit's bid-offer pairs, the operator's acceptance logic and the cash-out derivation, once per participant per period &mdash; and it couples participants to each other. Not for a first edition.</figcaption>
+      <figcaption><span class="fignum">Fig.&nbsp;4</span> <b>A straight line whose slope moves with the period tracks the staircase without rebuilding it.</b> Re-clearing against the real stack means reconstructing every unit's bid-offer pairs, the operator's acceptance logic and the cash-out derivation, once per participant per period &mdash; and it couples participants to each other. Not for a first edition.</figcaption>
     </figure>
     </div>
   </section>
@@ -841,7 +929,7 @@ tr:last-child td{border-bottom:0}
         <text class="lab on" x="766" y="131" text-anchor="middle">Meta-forecast</text>
         <text class="tiny" x="766" y="150" text-anchor="middle">aggregated field</text>
       </svg>
-      <figcaption><span class="fignum">Fig.&nbsp;4</span> <b>Two tables, one submission, no second registration.</b> Both tracks feed the aggregate that competes on the public leaderboard under its own name.</figcaption>
+      <figcaption><span class="fignum">Fig.&nbsp;5</span> <b>Two tables, one submission, no second registration.</b> Both tracks feed the aggregate that competes on the public leaderboard under its own name.</figcaption>
     </figure>
     </div>
   </section>
@@ -894,7 +982,7 @@ tr:last-child td{border-bottom:0}
         <text class="tiny" x="524" y="134" text-anchor="middle">live delivery days &#8212; 2 weeks each, scored at T+2 on final imbalance prices</text>
         <text class="tiny" x="524" y="150" text-anchor="middle">overall table runs alongside and decides the main prize</text>
       </svg>
-      <figcaption><span class="fignum">Fig.&nbsp;5</span> <b>Twelve weeks live, six chances to win something.</b> The qualifying round runs on historical periods, so the infrastructure is proven before the first live gate closes.</figcaption>
+      <figcaption><span class="fignum">Fig.&nbsp;6</span> <b>Twelve weeks live, six chances to win something.</b> The qualifying round runs on historical periods, so the infrastructure is proven before the first live gate closes.</figcaption>
     </figure>
     </div>
   </section>
