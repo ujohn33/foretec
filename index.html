@@ -775,7 +775,8 @@ tr:last-child td{border-bottom:0}
 
     <div class="prose" style="margin-top:20px">
       <p>An infeasible schedule is clipped rather than rejected: the engine bounds each value by the power limit and by the energy actually in the battery, settles the clipped schedule, and returns it with the score. Nothing about that depends on other participants, so it stays reproducible from published data.</p>
-      <p>The battery starts each delivery day at 20 MWh. Whatever is left above or below that at midnight is settled at the day's mean day-ahead price, so energy cannot be carried across days for free and a full battery at midnight is not wasted. The perfect-foresight benchmark dispatches the same battery under the same constraints and pays the same cycle cost &mdash; otherwise the ratio would reward storage rather than measure the use made of it.</p>
+      <p>The battery starts the edition empty and its state of charge runs on from one period to the next, across days and rounds alike. There is no overnight reset and nothing to value at midnight: anything discharged has to have been charged first, at a price and with the losses paid, so a schedule cannot manufacture energy.</p>
+      <p>The perfect-foresight benchmark is computed without the battery &mdash; wind only, against the same prices and the same impact term. Storage is therefore upside against the benchmark rather than part of it: a schedule that works carries a score above 100&nbsp;%, and leaving the column out costs nothing but that upside.</p>
     </div>
     </div>
   </section>
@@ -1072,7 +1073,7 @@ tr:last-child td{border-bottom:0}
           <tr><td>Impact scaling</td><td class="v">0.5&ndash;3&times;</td><td>Period spread against its running median, clipped, so tight periods bite and slack ones do not.</td></tr>
           <tr><td>Imbalance rule</td><td class="v">to confirm</td><td>One-price or two-price settlement, mirroring Energinet's live rule. Changes the optimal commitment entirely.</td></tr>
           <tr><td>Scoring lag</td><td class="v">T+2</td><td>Leaderboard waits for final imbalance prices rather than preliminary ones.</td></tr>
-          <tr><td>Storage</td><td class="v">20 MW / 40 MWh</td><td>Two hours at full power, the shape most often built alongside wind in the zone. Optional to schedule, identical for everyone.</td></tr>
+          <tr><td>Storage</td><td class="v">20 MW / 40 MWh</td><td>Two hours at full power, the shape most often built alongside wind in the zone. Identical for everyone, empty at the start of the edition, optional to schedule.</td></tr>
           <tr><td>Round-trip efficiency</td><td class="v">90&nbsp;%</td><td>Split evenly across charge and discharge. Bounds and losses are checked by the engine, not by the participant.</td></tr>
           <tr><td>Cycle cost</td><td class="v">c</td><td>Per MWh discharged, from the amortised cell cost of a battery this size. Set high enough that cycling on forecast noise does not pay.</td></tr>
           <tr><td>Aggregation rule</td><td class="v">median</td><td>Median position and quantile-wise median across submissions above baseline. Backtested against the mean and a trimmed mean on qualifying-round data before the first live gate.</td></tr>
