@@ -273,12 +273,12 @@ figcaption{
 figcaption b{color:var(--ink); font-weight:600}
 .fignum{font-family:"Geist Mono",ui-monospace,monospace; font-size:.7rem; letter-spacing:.1em; text-transform:uppercase; color:var(--ink2); margin-right:8px; white-space:nowrap}
 
-svg .lab{font-family:"Geist Mono",monospace; font-size:12px; fill:var(--ink2)}
+svg .lab{font-family:"Geist Mono",monospace; font-size:15px; fill:var(--ink2)}
 svg .lab.on{fill:var(--ink)}
 svg .lab.g{fill:var(--green)}
 svg .lab.a{fill:var(--amber)}
 svg .lab.b{fill:var(--blue-ink)}
-svg .tiny{font-family:"Geist Mono",monospace; font-size:10.5px; fill:var(--ink2); letter-spacing:.06em}
+svg .tiny{font-family:"Geist Mono",monospace; font-size:12.5px; fill:var(--ink2); letter-spacing:.04em}
 svg .axis{stroke:var(--rule); stroke-width:1}
 svg .uband{fill:var(--blue); opacity:.15}
 svg .pos{stroke:var(--ink); stroke-width:2.6; fill:none; stroke-linejoin:round}
@@ -624,28 +624,18 @@ tr:last-child td{border-bottom:0}
     <h2 class="sidehead">The loop</h2>
     <div class="s-body">
     <div class="prose">
-      <p>Participants source their own inputs. Any data a participant can lawfully obtain is admissible &mdash; open weather forecasts, a commercial NWP subscription, satellite feeds, their own models &mdash; and none of it has to be declared. The platform publishes only what the score is computed from, so that every result can be reproduced: realised zonal generation and the day-ahead, intraday and imbalance prices for each settled period. A starter kit ships with it &mdash; a list of free sources, tutorials for pulling and aligning them, and a baseline model that produces a valid submission out of the box.</p>
-      <p>A submission is one file per gate &mdash; one row per settlement period, 96 rows for a delivery day. Files arrive by API or upload, are timestamped server-side and locked at the gate. A gate with no file carries the previous position forward: miss the intraday revision and the day-ahead commitment stands, miss both and the whole volume settles as imbalance.</p>
-      <p>What the platform publishes is a record rather than a feed: the series each score was computed from, at the vintage used, so that any result can be recomputed line by line. It runs behind the market by design and is not where inputs should come from. Anything fresher is a fetch from the source, on the participant's own account.</p>
-      <p>No price for the delivery day is known at the day-ahead gate. The auction clears after it closes and the result is published in the early afternoon of D&minus;1, so the first position is committed against a forecast of the price as well as of the generation. By the intraday gate the day-ahead price is settled and the intraday index for the period has started to form; the imbalance price is not known to anyone until after delivery.</p>
-      <p>After delivery the engine waits for final imbalance prices, which is T+2, then scores every submission, updates both leaderboards and republishes the aggregate. Nothing is scored on preliminary prices, and no published score is revised.</p>
+      <p>Participants source their own inputs. Any data a participant can lawfully obtain is admissible, and none of it has to be declared. The platform ships a starter kit &mdash; free sources, tutorials, and a baseline model that produces a valid submission out of the box.</p>
+      <p>A submission is one file per gate: one row per settlement period, 96 rows for a delivery day. Files arrive by API or upload and lock server-side at the gate.</p>
     </div>
 
-    <div class="tablewrap" style="margin-top:6px">
-      <table>
-        <caption>What has settled by the day-ahead gate, 12:00 on D&minus;1</caption>
-        <thead>
-          <tr><th>Series</th><th>State at the gate</th></tr>
-        </thead>
-        <tbody>
-          <tr><td>Wind generation</td><td>Realised output published through the day by the operator, so the series runs to within about an hour of the gate.</td></tr>
-          <tr><td>Installed capacity</td><td>Current, and revised only as units commission or retire. It is the denominator of the scaling, not a forecasting problem.</td></tr>
-          <tr><td>Day-ahead price</td><td>Settled through D&minus;1. The price for delivery day D clears after this gate and publishes in the early afternoon.</td></tr>
-          <tr><td>Intraday index</td><td>Settled to the last traded period. Trading for D opens once the day-ahead result is out, so there is no index for D yet.</td></tr>
-          <tr><td>Imbalance price</td><td>Final through D&minus;3, two days behind delivery under the same rule the leaderboard waits for. Preliminary values publish sooner and are a participant's to use or ignore.</td></tr>
-        </tbody>
-      </table>
-    </div>
+    <details class="notes flat">
+      <summary>What is known at each gate</summary>
+      <div class="notes-body">
+        <p>No price for the delivery day is known at the day-ahead gate. The auction clears after it closes and publishes in the early afternoon of D&minus;1, so the first position is committed against a forecast of the price as well as of the generation. By the intraday gate the day-ahead price is settled and the intraday index has started to form. The imbalance price is not known to anyone until after delivery.</p>
+        <p>What the platform publishes is a record rather than a feed &mdash; the series each score was computed from, at the vintage used, so any result can be recomputed. It runs behind the market by design. Anything fresher is a fetch from the source, on the participant's own account.</p>
+        <p>A gate with no file carries the previous position forward: miss the intraday revision and the day-ahead commitment stands, miss both and the whole volume settles as imbalance. Scoring then waits for final imbalance prices at T+2. Nothing is scored on preliminary prices, and no published score is revised.</p>
+      </div>
+    </details>
 
     <div class="vector" style="margin-top:22px">
       <div class="vector-head">
@@ -671,60 +661,60 @@ tr:last-child td{border-bottom:0}
     </div>
 
     <figure>
-      <svg viewBox="0 0 900 340" role="img" aria-label="Timeline of one delivery day: participants source their own inputs and return one file at each of the two gates, while the platform publishes the settled series and, at T plus two, the scores">
+      <svg viewBox="0 0 900 350" role="img" aria-label="Timeline of one delivery day: participants source their own inputs and return one file at each of the two gates, while the platform publishes the scoring record and, at T plus two, the scores">
         <defs>
           <marker id="arL" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
             <path d="M0 0 L10 5 L0 10 z" fill="var(--ink2)"/>
           </marker>
         </defs>
 
-        <line class="gline" x1="330" y1="16" x2="330" y2="302"/>
-        <line class="gline" x1="600" y1="16" x2="600" y2="302"/>
+        <line class="gline" x1="340" y1="18" x2="340" y2="312"/>
+        <line class="gline" x1="610" y1="18" x2="610" y2="312"/>
 
-        <line class="axis" x1="20" y1="164" x2="880" y2="164"/>
-        <circle cx="330" cy="164" r="4.5" class="barB"/>
-        <circle cx="600" cy="164" r="4.5" class="barB"/>
-        <circle cx="690" cy="164" r="4.5" fill="var(--surface)" stroke="var(--ink2)" stroke-width="1.4"/>
-        <text class="tiny" x="690" y="188" text-anchor="middle">delivery</text>
+        <line class="axis" x1="20" y1="166" x2="885" y2="166"/>
+        <circle cx="340" cy="166" r="5" class="barB"/>
+        <circle cx="610" cy="166" r="5" class="barB"/>
+        <circle cx="700" cy="166" r="5" fill="var(--surface)" stroke="var(--ink2)" stroke-width="1.4"/>
+        <text class="tiny" x="700" y="192" text-anchor="middle">delivery</text>
 
         <text class="tiny" x="10" y="16">PLATFORM</text>
-        <text class="tiny" x="10" y="334">PARTICIPANT</text>
+        <text class="tiny" x="10" y="344">PARTICIPANT</text>
 
-        <rect class="box" x="60" y="30" width="160" height="66" rx="2"/>
-        <text class="tiny" x="72" y="50">DAILY, LAGGED</text>
-        <text class="lab on" x="72" y="70">scoring record</text>
-        <text class="tiny" x="72" y="86">settled prices, output</text>
-        <path class="flow" d="M140 96 V154" marker-end="url(#arL)"/>
+        <rect class="box" x="55" y="28" width="190" height="76" rx="2"/>
+        <text class="tiny" x="69" y="50">DAILY, LAGGED</text>
+        <text class="lab on" x="69" y="74">scoring record</text>
+        <text class="tiny" x="69" y="93">prices and output</text>
+        <path class="flow" d="M150 104 V156" marker-end="url(#arL)"/>
 
-        <rect class="box" x="380" y="30" width="160" height="66" rx="2"/>
-        <text class="tiny" x="392" y="50">AFTER THE GATE</text>
-        <text class="lab on" x="392" y="70">day-ahead result</text>
-        <text class="tiny" x="392" y="86">then intraday index</text>
-        <path class="flow" d="M460 96 V154" marker-end="url(#arL)"/>
+        <rect class="box" x="375" y="28" width="190" height="76" rx="2"/>
+        <text class="tiny" x="389" y="50">AFTER THE GATE</text>
+        <text class="lab on" x="389" y="74">day-ahead result</text>
+        <text class="tiny" x="389" y="93">then intraday index</text>
+        <path class="flow" d="M470 104 V156" marker-end="url(#arL)"/>
 
-        <rect class="box" x="710" y="30" width="160" height="66" rx="2"/>
-        <text class="tiny" x="722" y="50">T+2</text>
-        <text class="lab on" x="722" y="70">scores published</text>
-        <text class="tiny" x="722" y="86">both leaderboards</text>
-        <path class="flow" d="M790 96 V154" marker-end="url(#arL)"/>
+        <rect class="box" x="695" y="28" width="190" height="76" rx="2"/>
+        <text class="tiny" x="709" y="50">T+2</text>
+        <text class="lab on" x="709" y="74">scores published</text>
+        <text class="tiny" x="709" y="93">both leaderboards</text>
+        <path class="flow" d="M790 104 V156" marker-end="url(#arL)"/>
 
-        <rect x="20" y="224" width="150" height="66" rx="2" fill="none" stroke="var(--rule)" stroke-width="1.2" stroke-dasharray="4 4"/>
-        <text class="tiny" x="32" y="244">ANY SOURCE</text>
-        <text class="lab on" x="32" y="264">own inputs</text>
-        <text class="tiny" x="32" y="280">weather, models</text>
-        <path class="flow" d="M170 257 H244" marker-end="url(#arL)"/>
+        <rect x="20" y="228" width="180" height="76" rx="2" fill="none" stroke="var(--rule)" stroke-width="1.2" stroke-dasharray="4 4"/>
+        <text class="tiny" x="34" y="250">ANY SOURCE</text>
+        <text class="lab on" x="34" y="274">own inputs</text>
+        <text class="tiny" x="34" y="293">weather, models</text>
+        <path class="flow" d="M200 266 H239" marker-end="url(#arL)"/>
 
-        <rect class="boxq" x="250" y="224" width="160" height="66" rx="2"/>
-        <text class="tiny" x="262" y="244">12:00 D&minus;1 &mdash; GATE</text>
-        <text class="lab on" x="262" y="264">day-ahead file</text>
-        <text class="tiny" x="262" y="280">position + quantiles</text>
-        <path class="flow" d="M330 224 V174" marker-end="url(#arL)"/>
+        <rect class="boxq" x="245" y="228" width="190" height="76" rx="2"/>
+        <text class="tiny" x="259" y="250">12:00 D&minus;1 &mdash; GATE</text>
+        <text class="lab on" x="259" y="274">day-ahead file</text>
+        <text class="tiny" x="259" y="293">position + quantiles</text>
+        <path class="flow" d="M340 228 V176" marker-end="url(#arL)"/>
 
-        <rect class="boxq" x="520" y="224" width="160" height="66" rx="2"/>
-        <text class="tiny" x="532" y="244">H&minus;1 &mdash; GATE</text>
-        <text class="lab on" x="532" y="264">intraday revision</text>
-        <text class="tiny" x="532" y="280">new position only</text>
-        <path class="flow" d="M600 224 V174" marker-end="url(#arL)"/>
+        <rect class="boxq" x="515" y="228" width="190" height="76" rx="2"/>
+        <text class="tiny" x="529" y="250">H&minus;1 &mdash; GATE</text>
+        <text class="lab on" x="529" y="274">intraday revision</text>
+        <text class="tiny" x="529" y="293">new position only</text>
+        <path class="flow" d="M610 228 V176" marker-end="url(#arL)"/>
       </svg>
       <figcaption><span class="fignum">Fig.&nbsp;1</span> <b>One delivery day, and what is known when.</b> Participants bring their own inputs; the platform publishes the series the score is computed from and, once final prices are in, the scores themselves. The day-ahead price arrives <i>after</i> the day-ahead gate has closed, so the first commitment is made blind to it. Both gates lock server-side.</figcaption>
     </figure>
@@ -745,9 +735,13 @@ tr:last-child td{border-bottom:0}
     <h2 class="sidehead">Storage</h2>
     <div class="s-body">
     <div class="prose">
-      <p>An edition may attach a battery to the same notional site; the DK1 proposal is 20 MW / 40 MWh. It belongs to every participant equally. The <b>battery_mw</b> column is what is optional: omit it and the battery stands idle, which is a valid entry and a scoring choice like any other.</p>
-      <p>The column is a schedule, one value per settlement period, discharge positive and charge negative. It does not add a second position. <b>position_mw</b> remains the whole commitment for the period, and the battery changes what is behind it: what is physically delivered is the realised wind plus the battery schedule, and imbalance is measured from that.</p>
+      <p>An edition may attach a battery to the same notional site; the DK1 proposal is 20 MW / 40 MWh, the same for everyone. The <b>battery_mw</b> column is what is optional &mdash; omit it and the battery stands idle.</p>
+      <p>The column is a schedule, not a second position: discharge positive, charge negative. <b>position_mw</b> stays the whole commitment, and what is physically delivered is the realised wind plus the schedule.</p>
     </div>
+
+    <details class="notes flat">
+      <summary>Storage rules in full</summary>
+      <div class="notes-body">
 
     <div class="rulebox">
       <div class="leg">
@@ -773,11 +767,11 @@ tr:last-child td{border-bottom:0}
       </div>
     </div>
 
-    <div class="prose" style="margin-top:20px">
-      <p>An infeasible schedule is clipped rather than rejected: the engine bounds each value by the power limit and by the energy actually in the battery, settles the clipped schedule, and returns it with the score. Nothing about that depends on other participants, so it stays reproducible from published data.</p>
-      <p>The battery starts the edition empty and its state of charge runs on from one period to the next, across days and rounds alike. There is no overnight reset and nothing to value at midnight: anything discharged has to have been charged first, at a price and with the losses paid, so a schedule cannot manufacture energy.</p>
-      <p>The perfect-foresight benchmark is computed without the battery &mdash; wind only, against the same prices and the same impact term. Storage is therefore upside against the benchmark rather than part of it: a schedule that works carries a score above 100&nbsp;%, and leaving the column out costs nothing but that upside.</p>
-    </div>
+        <p>An infeasible schedule is clipped rather than rejected: the engine bounds each value by the power limit and by the energy actually in the battery, settles the clipped schedule, and returns it with the score.</p>
+        <p>The battery starts the edition empty and its state of charge runs on from one period to the next, across days and rounds alike. There is no overnight reset: anything discharged has to have been charged first, at a price and with the losses paid.</p>
+        <p>The perfect-foresight benchmark is computed without the battery &mdash; wind only, against the same prices and the same impact term. Storage is upside against the benchmark rather than part of it: a schedule that works carries a score above 100&nbsp;%, and leaving the column out costs nothing but that upside.</p>
+      </div>
+    </details>
     </div>
   </section>
 
@@ -842,7 +836,7 @@ tr:last-child td{border-bottom:0}
     <h2 class="sidehead">Settlement</h2>
     <div class="s-body">
     <div class="prose">
-      <p>Day-ahead is a uniform-price auction: a marginal volume does not move the clearing price, so that leg takes no correction. Intraday is continuous trading against an order book, so the published index is a mid nobody transacts at, and crossing the spread is charged. Imbalance is the only leg where a participant's own volume plausibly moves the price they receive, and the only one carrying a modelled term.</p>
+      <p>Three legs, each against its own published price. Only imbalance carries a modelled term.</p>
     </div>
 
     <div class="rulebox col">
@@ -868,6 +862,13 @@ tr:last-child td{border-bottom:0}
         </div>
       </div>
     </div>
+
+    <details class="notes flat">
+      <summary>Why only imbalance is corrected</summary>
+      <div class="notes-body">
+        <p>Day-ahead is a uniform-price auction: a marginal volume does not move the clearing price, so that leg takes no correction. Intraday is continuous trading against an order book, so the published index is a mid nobody transacts at, and crossing the spread is a real cost. Imbalance is the only leg where a participant's own volume plausibly moves the price they themselves receive.</p>
+      </div>
+    </details>
 
     <figure>
       <svg viewBox="0 0 860 330" role="img" aria-label="Revenue for one delivery quarter built up from the day-ahead, intraday and imbalance legs, compared against the perfect-foresight benchmark">
@@ -896,7 +897,7 @@ tr:last-child td{border-bottom:0}
         <path d="M700 91 L700 63" stroke="var(--amber)" stroke-width="1.6" fill="none"/>
         <path d="M695 86 L700 96 L705 86 Z" fill="var(--amber)"/>
         <path d="M695 68 L700 58 L705 68 Z" fill="var(--amber)"/>
-        <text class="lab a" x="692" y="40" text-anchor="middle">13.9 pts short</text>
+        <text class="lab a" x="668" y="38" text-anchor="middle">13.9 pts short</text>
 
         <text class="tiny" x="164" y="286" text-anchor="middle">day-ahead</text>
         <text class="tiny" x="164" y="302" text-anchor="middle">52 MWh &times; &euro;62.00</text>
@@ -919,13 +920,19 @@ tr:last-child td{border-bottom:0}
     <div class="s-body">
     <div class="prose">
       <p>The published imbalance price is the price that occurred given the system imbalance that actually happened, which did not include the participant's notional wind. The data holds one realisation, not a function from volume to price: a missing counterfactual, not a missing dataset.</p>
-      <p>Leaving it out is not neutral. Against a fixed price path, any period where the imbalance price beat day-ahead has one answer: commit nothing and take the whole volume at imbalance. A leaderboard of corner solutions ranks a price read rather than forecasting and decision skill. A single constant coefficient prevents that but is too soft in tight periods and too punitive in slack ones.</p>
-      <p>The proposal keeps the linear form &mdash; cheap, reproducible from published data, and it keeps each participant's score independent of the others &mdash; but varies the slope with the period's imbalance-to-day-ahead spread against its running median, clipped to a bounded range. The base level is set where deliberate imbalance stops being profitable in backtest.</p>
+      <p>The proposal keeps the linear form &mdash; cheap, reproducible, and it keeps each participant's score independent of the others &mdash; but varies the slope with the period's imbalance-to-day-ahead spread against its running median, clipped to a bounded range. The base level is set where deliberate imbalance stops being profitable in backtest.</p>
     </div>
+
+    <details class="notes flat">
+      <summary>Why not leave the term out</summary>
+      <div class="notes-body">
+        <p>Against a fixed price path, any period where the imbalance price beat day-ahead has one answer: commit nothing and take the whole volume at imbalance. A leaderboard of corner solutions ranks a price read rather than forecasting and decision skill. A single constant coefficient prevents that, but is too soft in tight periods and too punitive in slack ones.</p>
+      </div>
+    </details>
 
     <figure>
       <svg viewBox="0 0 860 320" role="img" aria-label="A constant impact coefficient compared against the real balancing merit order it approximates">
-        <text class="mono" x="70" y="30" style="font-size:11px; letter-spacing:.11em">WHAT THE EDITION USES</text>
+        <text class="mono" x="70" y="30" style="font-size:13px; letter-spacing:.09em">WHAT THE EDITION USES</text>
         <line class="axis" x1="70" y1="250" x2="400" y2="250"/>
         <line class="axis" x1="70" y1="56" x2="70" y2="250"/>
         <line class="med" x1="70" y1="90" x2="400" y2="90"/>
@@ -937,7 +944,7 @@ tr:last-child td{border-bottom:0}
         <text class="tiny" x="235" y="278" text-anchor="middle">your imbalance volume &#8594;</text>
         <text class="tiny" x="40" y="150" transform="rotate(-90 40 150)" text-anchor="middle">price you receive</text>
 
-        <text class="mono" x="490" y="30" style="font-size:11px; letter-spacing:.11em">WHAT IT APPROXIMATES</text>
+        <text class="mono" x="490" y="30" style="font-size:13px; letter-spacing:.09em">WHAT IT APPROXIMATES</text>
         <line class="axis" x1="490" y1="250" x2="820" y2="250"/>
         <line class="axis" x1="490" y1="56" x2="490" y2="250"/>
         <path d="M490 90 L536 90 L536 104 L578 104 L578 116 L620 116 L620 142 L662 142 L662 158 L700 158 L700 200 L740 200 L740 214 L778 214 L778 246 L820 246"
@@ -956,42 +963,50 @@ tr:last-child td{border-bottom:0}
     <h2 class="sidehead">Two tracks</h2>
     <div class="s-body">
     <div class="prose">
-      <p>Bundling forecasting with trading deters entrants: almost nobody enters who is not already working in energy. The required column is a position, scored on captured value. The optional quantile columns are scored on pinball loss, the standard rule for quantile forecasts, as a separate table. A forecaster enters with the columns they already understand and can step across in a later round.</p>
-      <p style="margin-top:14px">Every submission above baseline is also combined into one aggregate &mdash; a median position on the value track, a quantile-wise median on the forecast track &mdash; scored under its own name on the public leaderboard alongside everyone else. Combined forecasts routinely beat almost every individual that goes into them, and the aggregate faces the same realised prices and the same impact term, so finishing above it is a result in itself.</p>
+      <p>The required column is a position, scored on captured value. The optional quantile columns are scored on pinball loss, the standard rule for quantile forecasts, as a separate table. A forecaster enters with the columns they already understand and can step across in a later round.</p>
+      <p>Every submission above baseline is also combined into one aggregate &mdash; a median position on the value track, a quantile-wise median on the forecast track &mdash; scored under its own name alongside everyone else.</p>
     </div>
+
+    <details class="notes flat">
+      <summary>Why two tracks, and why the aggregate competes</summary>
+      <div class="notes-body">
+        <p>Bundling forecasting with trading deters entrants: almost nobody enters who is not already working in energy. Splitting the tables keeps the trading task without making it the entry requirement.</p>
+        <p>Combined forecasts routinely beat almost every individual that goes into them, and the aggregate faces the same realised prices and the same impact term, so finishing above it is a result in itself.</p>
+      </div>
+    </details>
 
     <figure>
       <svg viewBox="0 0 860 250" role="img" aria-label="One submission file feeding two separate leaderboards, a value track from the position column and a forecast track from the quantile columns">
-        <rect class="box" x="40" y="60" width="230" height="130" rx="2"/>
-        <text class="mono" x="56" y="86" style="font-size:10.5px; letter-spacing:.1em">SUBMISSION &#8212; ONE FILE</text>
-        <rect class="boxq" x="56" y="100" width="198" height="30" rx="2"/>
+        <rect class="box" x="40" y="56" width="292" height="138" rx="2"/>
+        <text class="mono" x="56" y="86" style="font-size:12.5px; letter-spacing:.08em">SUBMISSION &#8212; ONE FILE</text>
+        <rect class="boxq" x="56" y="100" width="260" height="32" rx="2"/>
         <text class="lab on" x="66" y="120">position_mw</text>
-        <text class="tiny" x="244" y="120" text-anchor="end">required</text>
-        <rect x="56" y="140" width="198" height="30" rx="2" fill="none" stroke="var(--rule)" stroke-width="1.2"/>
-        <text class="lab" x="66" y="160">p10 &middot; p50 &middot; p90</text>
-        <text class="tiny" x="244" y="160" text-anchor="end">optional</text>
+        <text class="tiny" x="306" y="121" text-anchor="end">required</text>
+        <rect x="56" y="142" width="260" height="32" rx="2" fill="none" stroke="var(--rule)" stroke-width="1.2"/>
+        <text class="lab" x="66" y="163">p10 &middot; p50 &middot; p90</text>
+        <text class="tiny" x="306" y="163" text-anchor="end">optional</text>
 
-        <path class="flow" d="M270 115 C 340 115, 350 92, 420 92" marker-end="url(#ar)"/>
-        <path class="flow" d="M270 155 C 340 155, 350 178, 420 178" marker-end="url(#ar)"/>
+        <path class="flow" d="M332 116 C 366 116, 378 92, 414 92" marker-end="url(#ar)"/>
+        <path class="flow" d="M332 158 C 366 158, 378 178, 414 178" marker-end="url(#ar)"/>
         <defs>
           <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
             <path d="M0 0 L10 5 L0 10 z" fill="var(--ink2)"/>
           </marker>
         </defs>
 
-        <rect class="box" x="430" y="62" width="180" height="60" rx="2"/>
-        <text class="lab on" x="446" y="88">Value track</text>
-        <text class="tiny" x="446" y="107">share of perfect foresight</text>
+        <rect class="box" x="420" y="56" width="250" height="66" rx="2"/>
+        <text class="lab on" x="436" y="84">Value track</text>
+        <text class="tiny" x="436" y="106">share of perfect foresight</text>
 
-        <rect class="box" x="430" y="148" width="180" height="60" rx="2"/>
-        <text class="lab on" x="446" y="174">Forecast track</text>
-        <text class="tiny" x="446" y="193">pinball loss</text>
+        <rect class="box" x="420" y="142" width="250" height="66" rx="2"/>
+        <text class="lab on" x="436" y="170">Forecast track</text>
+        <text class="tiny" x="436" y="192">pinball loss</text>
 
-        <path class="flow" d="M610 92 C 660 92, 670 135, 700 135" marker-end="url(#ar)"/>
-        <path class="flow" d="M610 178 C 660 178, 670 135, 700 135" marker-end="url(#ar)"/>
-        <rect class="box" x="706" y="105" width="120" height="60" rx="2"/>
-        <text class="lab on" x="766" y="131" text-anchor="middle">Meta-forecast</text>
-        <text class="tiny" x="766" y="150" text-anchor="middle">aggregated field</text>
+        <path class="flow" d="M670 89 C 682 89, 686 135, 694 135" marker-end="url(#ar)"/>
+        <path class="flow" d="M670 175 C 682 175, 686 135, 694 135" marker-end="url(#ar)"/>
+        <rect class="box" x="700" y="102" width="152" height="66" rx="2"/>
+        <text class="lab on" x="776" y="130" text-anchor="middle">Meta-forecast</text>
+        <text class="tiny" x="776" y="151" text-anchor="middle">aggregated field</text>
       </svg>
       <figcaption><span class="fignum">Fig.&nbsp;5</span> <b>Two tables, one submission, no second registration.</b> Both tracks feed the aggregate that competes on the public leaderboard under its own name.</figcaption>
     </figure>
@@ -1003,8 +1018,15 @@ tr:last-child td{border-bottom:0}
     <div class="s-body">
     <div class="prose">
       <p>Ranking once over a whole run loses people: an early error makes the average unrecoverable and the team stops submitting. Fortnightly rounds with points and a small prize each, plus an overall table, keep a bad week from ending someone's edition and give a sponsor something to watch every two weeks.</p>
-      <p>The qualifying round filters the field on historical periods before the first live gate, and identifies the teams worth funding: a modest participation grant to those who qualify, as the US power system operation competitions do, buys effort from people who would otherwise treat this as a weekend project.</p>
+      <p>The qualifying round filters the field on historical periods before the first live gate.</p>
     </div>
+
+    <details class="notes flat">
+      <summary>Participation grants</summary>
+      <div class="notes-body">
+        <p>Qualifying also identifies the teams worth funding. A modest grant to those who qualify, as the US power system operation competitions do, buys effort from people who would otherwise treat this as a weekend project.</p>
+      </div>
+    </details>
 
     <figure>
       <svg viewBox="0 0 860 190" role="img" aria-label="Edition calendar: a qualifying round on historical data, participation grants, six live fortnightly rounds and a final overall ranking">
@@ -1055,7 +1077,7 @@ tr:last-child td{border-bottom:0}
     <h2 class="sidehead">Open parameters</h2>
     <div class="s-body">
     <div class="prose">
-      <p>None of the values below is fixed. The anchor partner chooses the market and the asset; the edition's advisory board settles these parameters before the qualifying round opens. What follows is the starting proposal for a DK1 edition &mdash; each value backtested on a season of data and published with its reasoning, so the board argues about numbers rather than inventing them.</p>
+      <p>None of the values below is fixed. The anchor partner chooses the market and the asset; the edition's advisory board settles these parameters before the qualifying round opens. What follows is the starting proposal for a DK1 edition &mdash; each value backtested on a season of data and published with its reasoning.</p>
     </div>
 
     <div class="tablewrap col">
