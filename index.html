@@ -240,6 +240,18 @@ button:focus-visible{outline:2px solid var(--blue); outline-offset:3px}
 .note{font-size:.82rem; color:var(--ink2); margin-top:6px; line-height:1.6}
 .note b{color:var(--ink); font-weight:600}
 .done{font-size:.9rem; color:var(--blue-ink); margin-top:10px}
+.err{font-size:.9rem; color:var(--amber); margin-top:10px}
+.consent{display:flex; gap:10px; align-items:flex-start; font-family:inherit; font-size:.88rem; letter-spacing:0; text-transform:none; color:var(--ink2)}
+.consent input{margin-top:3px; accent-color:var(--ink)}
+.hp{position:absolute; left:-10000px; width:1px; height:1px; overflow:hidden}
+button:disabled{opacity:.5; cursor:default}
+.live-tag{display:flex; align-items:center; gap:8px; margin-bottom:14px; color:var(--green)}
+.live-tag i, .nav-bench i{display:inline-block; width:7px; height:7px; border-radius:50%; background:var(--green); box-shadow:0 0 0 3px var(--green-soft)}
+.nav-bench i{margin-left:7px; vertical-align:1px}
+.bench-links{display:flex; gap:28px; flex-wrap:wrap; margin-top:34px; font-size:.95rem}
+.bench-links a{color:var(--ink2); text-decoration:none; border-bottom:1px solid var(--rule); padding-bottom:2px}
+.bench-links a.go{color:var(--ink); font-weight:500; border-bottom-color:var(--blue)}
+.bench-links a:hover{color:var(--ink)}
 
 footer{border-top:1px solid var(--rule); padding:36px 0 60px; color:var(--ink2); font-size:.85rem}
 .foot{display:flex; justify-content:space-between; gap:20px; flex-wrap:wrap}
@@ -320,6 +332,7 @@ tr:last-child td{border-bottom:0}
       <a href="#gap" class="hide-sm nav-home">The gap</a>
       <a href="#how" class="hide-sm nav-home">How it works</a>
       <a href="#/mechanics" class="hide-sm" id="navMech">Mechanics</a>
+      <a href="https://energybench.foretec.co" class="hide-sm nav-bench">Energy Bench<i aria-hidden="true"></i></a>
       <a href="#sponsor" class="cta">Sponsor an edition</a>
     </nav>
   </div>
@@ -533,6 +546,34 @@ tr:last-child td{border-bottom:0}
   </div>
 </section>
 
+<section id="bench">
+  <div class="wrap">
+    <div class="sec-head measure">
+      <p class="mono live-tag"><i aria-hidden="true"></i>Live now</p>
+      <h2>The forecasting half is already running, in public.</h2>
+      <p class="lede" style="margin-top:18px">Energy Bench forecasts European power markets every day before the day-ahead gate. Every model gets the same frozen public inputs, and every forecast is scored against the grid operators&rsquo; actuals.</p>
+    </div>
+    <div class="facts">
+      <div class="fact">
+        <hr>
+        <div class="n">30+</div>
+        <p>Forecasting models: time-series foundation models, gradient boosting, and the grid operators&rsquo; own forecasts.</p>
+      </div>
+      <div class="fact">
+        <hr>
+        <div class="n">24</div>
+        <p>Series: price, wind, solar and load across six bidding zones, every quarter-hour.</p>
+      </div>
+      <div class="fact">
+        <hr>
+        <div class="n">Daily</div>
+        <p>Locked before the 12:00 gate since 2 October 2026. Every forecast and score is open data.</p>
+      </div>
+    </div>
+    <p class="bench-links"><a href="https://energybench.foretec.co" class="go">See the leaderboard &rarr;</a><a href="https://doi.org/10.57967/hf/11052">Open dataset &rarr;</a></p>
+  </div>
+</section>
+
 <section id="sponsor">
   <div class="wrap">
     <div class="sec-head measure">
@@ -588,7 +629,7 @@ tr:last-child td{border-bottom:0}
     <div class="signup">
       <h2 style="max-width:24ch">Find out when the first edition opens.</h2>
       <p class="lede" style="margin-top:14px; max-width:52ch">Occasional updates on dates, the edition spec, sponsorship and results. No more than one email a month, and nothing else ever.</p>
-      <form id="signup">
+      <form id="signup" novalidate>
         <div class="field">
           <label for="email">Email</label>
           <input type="email" id="email" name="email" required placeholder="you@company.com" autocomplete="email">
@@ -596,16 +637,19 @@ tr:last-child td{border-bottom:0}
         <div class="field">
           <label for="role">I am</label>
           <select id="role" name="role">
-            <option>a potential sponsor</option>
-            <option>a potential participant</option>
-            <option>a researcher</option>
-            <option>just curious</option>
+            <option value="sponsor">a potential sponsor</option>
+            <option value="participant">a potential participant</option>
+            <option value="researcher">a researcher</option>
+            <option value="curious">just curious</option>
           </select>
         </div>
+        <div class="hp" aria-hidden="true"><label for="website">Leave this empty</label><input type="text" id="website" name="website" tabindex="-1" autocomplete="off"></div>
+        <label class="consent"><input type="checkbox" id="consent" name="consent" required> Email me about Foretec editions. I can unsubscribe at any time.</label>
         <button type="submit">Request updates</button>
       </form>
-      <p class="note" id="note">Opens a pre-filled message in your mail client. Nothing is stored on this page.</p>
-      <p class="done" id="done" hidden>Thank you. Send the message your mail client just opened and you are on the list.</p>
+      <p class="note" id="note">Stored on our own server in the EU, used only for these updates, never shared, and deleted when you ask.</p>
+      <p class="done" id="done" hidden>Thank you, you are on the list.</p>
+      <p class="err" id="err" hidden></p>
     </div>
   </div>
 </section>
@@ -1114,6 +1158,7 @@ tr:last-child td{border-bottom:0}
   <div class="wrap foot">
     <span style="font-family:Inter,system-ui,sans-serif; font-weight:900; font-style:italic; letter-spacing:-.032em; font-size:1.2rem; color:var(--ink)">Foretec</span>
     <span>Brussels</span>
+    <span><a href="https://energybench.foretec.co">Energy Bench</a> &middot; <a href="https://github.com/ujohn33/foretec-energy-bench">GitHub</a> &middot; <a href="https://huggingface.co/datasets/ujohn33/foretec-energy-bench">Dataset</a></span>
     <span><a href="mailto:evgeny@foretec.be">evgeny@foretec.be</a></span>
   </div>
 </footer>
@@ -1253,15 +1298,27 @@ tr:last-child td{border-bottom:0}
   render();
 
   /* ---------- updates form ---------- */
-  document.getElementById("signup").addEventListener("submit", function(e){
+  /* stored on the waiting list shared with energybench.foretec.co/compete.html */
+  var form = document.getElementById("signup"), err = document.getElementById("err");
+  function fail(msg){ err.textContent = msg; err.hidden = false; }
+  form.addEventListener("submit", function(e){
     e.preventDefault();
+    err.hidden = true;
     var email = document.getElementById("email").value.trim();
-    if (!email) return;
-    var role = document.getElementById("role").value;
-    var body = "Please add me to the Foretec mailing list.\n\nEmail: " + email + "\nI am: " + role + "\n";
-    window.location.href = "mailto:evgeny@foretec.be?subject=" + encodeURIComponent("Foretec updates") + "&body=" + encodeURIComponent(body);
-    document.getElementById("note").hidden = true;
-    document.getElementById("done").hidden = false;
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return fail("Please enter a valid email address.");
+    if (!document.getElementById("consent").checked) return fail("Please tick the box so we may email you.");
+    var btn = form.querySelector("button"); btn.disabled = true;
+    fetch("https://energybench.foretec.co/api/waitlist", {
+      method: "POST", headers: {"Content-Type": "application/json", "Accept": "application/json"},
+      body: JSON.stringify({email: email, role: document.getElementById("role").value, consent: true,
+                            website: document.getElementById("website").value})
+    }).then(function(r){ return r.json().catch(function(){ return {}; }).then(function(j){ return {ok: r.ok, j: j}; }); })
+      .then(function(x){
+        if (x.ok){ form.hidden = true; document.getElementById("note").hidden = true; document.getElementById("done").hidden = false; }
+        else fail(x.j.error || "Something went wrong, please try again later.");
+      })
+      .catch(function(){ fail("Could not reach the server, please try again later."); })
+      .then(function(){ btn.disabled = false; });
   });
 })();
   /* ---------- pages ---------- */

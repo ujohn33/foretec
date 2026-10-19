@@ -24,7 +24,7 @@ Delete any existing A record on `@` first (GoDaddy parking page).
     A      @      185.199.109.153
     A      @      185.199.110.153
     A      @      185.199.111.153
-    CNAME  www    <your-github-username>.github.io
+    CNAME  www    ujohn33.github.io
 
 Optional IPv6, same `@` name:
 
@@ -33,7 +33,10 @@ Optional IPv6, same `@` name:
     AAAA   @      2606:50c0:8002::153
     AAAA   @      2606:50c0:8003::153
 
-`foretec.co`: use GoDaddy domain forwarding to `https://foretec.be` (301, forward with masking OFF).
+`foretec.co` and `www.foretec.co` point at the Energy Bench server and redirect to https://energybench.foretec.co.
+
+The sign-up form posts to the waiting list on that server (`https://energybench.foretec.co/api/waitlist`, the same list as
+the competition page there); foretec.be is one of the two origins it accepts.
 
 ## Updating
 Replace `index.html` in the repo. Live within a minute or so.
