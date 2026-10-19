@@ -349,26 +349,13 @@ tr:last-child td{border-bottom:0}
 
   <div class="strip">
     <div class="bars" id="bars" aria-hidden="true"></div>
-    <p class="mono strip-cap">96 settlement periods &middot; one day of imbalance prices in DK1</p>
+    <p class="mono strip-cap">96 settlement periods &middot; one day of imbalance prices</p>
   </div>
 
   <div class="demo">
     <div class="demo-head">
-      <h3>You have a 100 MW wind farm in DK1. How much do you sell day-ahead?</h3>
+      <h3>You run a wind farm. How much of its output do you sell day-ahead?</h3>
     <div class="assets">
-      <svg class="map" viewBox="0 0 124 120" role="img" aria-label="Map of Denmark with the DK1 bidding zone, western Denmark, highlighted">
-        <!-- Zealand and Lolland-Falster: DK2 -->
-        <path class="land" d="M88 68 L110 62 L118 78 L108 86 L103 99 L101 102 L83 91 L82 78 Z"/>
-        <path class="land" d="M82 107 L100 105 L107 109 L99 114 L85 113 Z"/>
-        <!-- Jutland: DK1 -->
-        <path class="zone" d="M69 5 L54 9 L22 27 L13 41 L10 67 L9 82 L20 101 L23 106 L42 109 L53 106 L43 85 L48 77 L55 72 L60 61 L78 52 L72 45 L62 45 L53 29 L68 15 Z"/>
-        <!-- Funen: DK1 -->
-        <path class="zone" d="M56 85 L66 80 L77 84 L79 93 L72 101 L62 100 L54 92 Z"/>
-        <circle class="pin" cx="24" cy="62" r="3.4"/>
-        <text class="on" x="16" y="76">DK1</text>
-        <text x="90" y="80">DK2</text>
-      </svg>
-
       <div class="asset">
         <svg width="34" height="40" viewBox="0 0 34 40" aria-hidden="true">
           <path class="ico" d="M16 15 V4 M14.7 16.9 L5.2 22.4 M18.3 16.9 L27.8 22.4"/>
@@ -377,7 +364,7 @@ tr:last-child td{border-bottom:0}
           <path class="ico" d="M11.6 35 H22.4"/>
         </svg>
         <div>
-          <b>100 MW onshore wind</b>
+          <b>Your renewable asset</b>
           <span>the output you forecast and sell</span>
         </div>
       </div>
@@ -390,8 +377,19 @@ tr:last-child td{border-bottom:0}
           <path class="spark" d="M19.6 15.4 L14.6 21.3 h3.6 l-1.4 4.6 5.2 -6.1 h-3.8 z"/>
         </svg>
         <div>
-          <b>20 MW &middot; 40 MWh battery</b>
+          <b>Storage</b>
           <span>optional, an extra column in the submission</span>
+        </div>
+      </div>
+
+      <div class="asset">
+        <svg width="34" height="40" viewBox="0 0 34 40" aria-hidden="true">
+          <path class="ico" d="M17 36 C 10 27, 7 21.5, 7 16 a10 10 0 0 1 20 0 c0 5.5 -3 11 -10 20 z"/>
+          <circle class="ico" cx="17" cy="16" r="3.6"/>
+        </svg>
+        <div>
+          <b>Any European zone</b>
+          <span>market and assets set by the edition&rsquo;s sponsor</span>
         </div>
       </div>
     </div>
@@ -427,7 +425,7 @@ tr:last-child td{border-bottom:0}
       <summary>How this is scored</summary>
       <div class="notes-body">
         <p>Sell more than you generate and you buy the shortfall back at the imbalance price; sell less and the surplus settles cheap. The optimal commitment therefore sits below your median forecast. The shaded area is what a second trade in intraday could still recover once the forecast has sharpened. It widens as your day-ahead commitment gets worse, because there is more error left to correct.</p>
-        <p><b>100% = selling actual generation at the day-ahead price.</b> Day-ahead &euro;80/MWh, intraday &euro;72 sell / &euro;90 buy, imbalance &euro;108 short / &euro;58 long with occasional spikes. Forecast median 55.5 MW on 100 MW of capacity. Illustrative DK1 conditions, not a specific trading day.</p><p>The demo assumes a <b>well-calibrated</b> forecast and a <b>known</b> price asymmetry, so it isolates the commitment decision from the forecasting problem. A real edition is harder: participants supply the distribution as well as the position, and nobody knows in advance which way the system will be short.</p>
+        <p><b>100% = selling actual generation at the day-ahead price.</b> Day-ahead &euro;80/MWh, intraday &euro;72 sell / &euro;90 buy, imbalance &euro;108 short / &euro;58 long with occasional spikes. Forecast median 55.5&nbsp;% of capacity. Illustrative conditions, not a specific market or trading day.</p><p>The demo assumes a <b>well-calibrated</b> forecast and a <b>known</b> price asymmetry, so it isolates the commitment decision from the forecasting problem. A real edition is harder: participants supply the distribution as well as the position, and nobody knows in advance which way the system will be short.</p>
       </div>
     </details>
   </div>
@@ -503,7 +501,7 @@ tr:last-child td{border-bottom:0}
       <div class="notes-body wide">
         <div class="vector">
           <div class="vector-head">
-            <span>submission &middot; edition DK1&middot;01 &middot; gate DAY-AHEAD</span>
+            <span>submission &middot; edition 01 &middot; gate DAY-AHEAD</span>
             <span class="vh-key"><i class="k-req"></i>required <i class="k-opt"></i>optional</span>
           </div>
           <div class="vector-scroll">
@@ -669,8 +667,8 @@ tr:last-child td{border-bottom:0}
 <main class="wrap">
   <div class="dochead">
     <h1>How an edition is scored</h1>
-    <p class="docmeta">Foretec &middot; edition one, DK1 &middot; draft for discussion, September 2026</p>
-    <p class="abstract">By default a participant holds a notional 100 MW share of DK1 onshore wind, and in an edition that enables it a co-located battery. They commit a position ahead of delivery, revise it once as the forecast sharpens, and carry whatever is left as imbalance. The score is the share of perfect-foresight revenue captured. Everything settles against published prices; the only modelled quantity is what a participant's own volume would have done to the imbalance price, which no dataset contains. Each choice below trades realism against the size of the field it admits.</p>
+    <p class="docmeta">Foretec &middot; edition one &middot; draft for discussion, October 2026</p>
+    <p class="abstract">A participant holds a notional share of a bidding zone&rsquo;s renewable output and, in an edition that enables it, co-located storage. The edition&rsquo;s anchor partner chooses the zone and the asset mix. They commit a position ahead of delivery, revise it once as the forecast sharpens, and carry whatever is left as imbalance. The score is the share of perfect-foresight revenue captured. Everything settles against published prices; the only modelled quantity is what a participant's own volume would have done to the imbalance price, estimated from the activated balancing bids. Each choice below trades realism against the size of the field it admits.</p>
   </div>
 
   <section class="s">
@@ -753,7 +751,7 @@ tr:last-child td{border-bottom:0}
 
     <div class="vector" style="margin-top:22px">
       <div class="vector-head">
-        <span>submission &middot; edition DK1&middot;01 &middot; gate DAY-AHEAD</span>
+        <span>submission &middot; edition 01 &middot; gate DAY-AHEAD</span>
         <span class="vh-key"><i class="k-req"></i>required <i class="k-opt"></i>optional</span>
       </div>
       <div class="vector-scroll">
@@ -781,7 +779,7 @@ tr:last-child td{border-bottom:0}
     <h2 class="sidehead">The asset</h2>
     <div class="s-body">
     <div class="prose">
-      <p>The default is a notional 100 MW share of DK1 aggregate onshore wind, scaled from Energinet data to nameplate capacity, the same share for every participant for the whole edition. The anchor partner of each edition can choose another market and asset mix. Realised generation in a settlement period is the zonal series scaled to that nameplate, y<sub>t</sub> = 100 &times; W<sub>t</sub> / C<sub>t</sub>, where W<sub>t</sub> is DK1 onshore wind production for the period and C<sub>t</sub> the installed onshore capacity in force. Both series are published by Energinet.</p>
+      <p>The asset is a notional share of a bidding zone&rsquo;s aggregate output for one technology, for example onshore wind, the same share for every participant for the whole edition. The edition&rsquo;s anchor partner chooses the zone and the asset mix. Realised generation in a settlement period is the zonal series scaled to the notional nameplate P, y<sub>t</sub> = P &times; W<sub>t</sub> / C<sub>t</sub>, where W<sub>t</sub> is the zone&rsquo;s production of that technology for the period and C<sub>t</sub> the installed capacity in force, both from the transmission system operator&rsquo;s published data.</p>
       <p>No single unit stands behind the position, so there is no outage to track and no unit availability to model. A zonal series is also smoother than one farm: percentage forecast errors are smaller than a single-asset edition would produce.</p>
     </div>
     </div>
@@ -791,7 +789,7 @@ tr:last-child td{border-bottom:0}
     <h2 class="sidehead">Storage</h2>
     <div class="s-body">
     <div class="prose">
-      <p>An edition may attach a battery to the same notional site: 20 MW / 40 MWh, the same for everyone, starting empty, with 90&nbsp;% round-trip efficiency and a cycle cost. Infeasible schedules are clipped, not rejected. The <b>battery_mw</b> column is what is optional: omit it and the battery stands idle.</p>
+      <p>An edition may attach storage to the same notional site, the same for everyone and starting empty. Its power, energy capacity, round-trip efficiency and cycle cost are set for the edition. Infeasible schedules are clipped, not rejected. The <b>battery_mw</b> column is what is optional: omit it and the battery stands idle.</p>
       <p>The column is a schedule, not a second position: discharge positive, charge negative. <b>position_mw</b> stays the whole commitment, and what is physically delivered is the realised wind plus the schedule.</p>
     </div>
 
@@ -811,7 +809,7 @@ tr:last-child td{border-bottom:0}
         <p class="tag g">State of charge</p>
         <div>
           <p class="f">e<sub>t+1</sub> = e<sub>t</sub> &minus; &Delta;t &middot; ( b<sub>t</sub><sup>+</sup> / &eta; + &eta; &middot; b<sub>t</sub><sup>&minus;</sup> )</p>
-          <p class="n">&Delta;t is a quarter hour, b<sup>+</sup> the discharge and b<sup>&minus;</sup> the charge part of the schedule, &eta; the one-way efficiency. Bounded by 0 &le; e &le; 40 MWh and |b| &le; 20 MW.</p>
+          <p class="n">&Delta;t is a quarter hour, b<sup>+</sup> the discharge and b<sup>&minus;</sup> the charge part of the schedule, &eta; the one-way efficiency. Bounded by 0 &le; e &le; E and |b| &le; P<sub>b</sub>, the edition&rsquo;s energy and power limits.</p>
         </div>
       </div>
       <div class="leg">
@@ -914,7 +912,7 @@ tr:last-child td{border-bottom:0}
         <p class="tag a">Imbalance</p>
         <div>
           <p class="f">(y &minus; x<sub>ID</sub>) &times; (&pi;<sub>IMB</sub> &minus; &Delta;<sub>t</sub>)</p>
-          <p class="n">Settled at the imbalance price for each quarter-hour, mirroring Energinet&rsquo;s settlement rule. &Delta;<sub>t</sub> is the price impact of your own imbalance, estimated from the activated balancing bids as set out under <i>Price impact</i> below: steep when the system is tight, close to zero when it is not.</p>
+          <p class="n">Settled at the single imbalance price for each quarter-hour. &Delta;<sub>t</sub> is the price impact of your own imbalance, estimated from the activated balancing bids as set out under <i>Price impact</i> below: steep when the system is tight, close to zero when it is not.</p>
         </div>
       </div>
     </div>
@@ -1151,26 +1149,26 @@ tr:last-child td{border-bottom:0}
     <h2 class="sidehead">Open parameters</h2>
     <div class="s-body">
     <div class="prose">
-      <p>None of the values below is fixed. The anchor partner chooses the market and the asset; the edition's advisory board settles these parameters before the first live month. What follows is the starting proposal for a DK1 edition, with each value backtested on a season of data and published with its reasoning.</p>
+      <p>None of the values below is fixed. The anchor partner chooses the market and the asset; the edition's advisory board settles these parameters before the first live month. What follows is the starting proposal, with each value backtested on a season of data from the chosen zone and published with its reasoning.</p>
     </div>
 
     <div class="tablewrap col">
       <table>
-        <caption>Proposed values for edition one, DK1</caption>
+        <caption>Proposed values for edition one</caption>
         <thead>
           <tr><th>Parameter</th><th>Proposed</th><th>How it gets justified</th></tr>
         </thead>
         <tbody>
-          <tr><td>Notional asset</td><td class="v">100 MW</td><td>Fixed share of DK1 aggregate onshore wind, scaled to nameplate. Published by Energinet.</td></tr>
+          <tr><td>Notional asset</td><td class="v">set by the sponsor</td><td>A fixed share of the chosen zone&rsquo;s aggregate output for one technology, scaled to a notional nameplate from the transmission system operator&rsquo;s published data.</td></tr>
           <tr><td>Gates</td><td class="v">12:00 D&minus;1, H&minus;1</td><td>Day-ahead auction close and one intraday revision. Submissions lock server-side.</td></tr>
           <tr><td>Period</td><td class="v">15 min</td><td>Matches imbalance settlement and, since European day-ahead markets moved to quarter-hourly products, the day-ahead auction too.</td></tr>
-          <tr><td>Intraday spread</td><td class="v">s, then shadow matching</td><td>First edition: the published index plus or minus half of <i>s</i>, calibrated from observed DK1 trade dispersion around the index over a full season. Then shadow matching on exchange trades.</td></tr>
+          <tr><td>Intraday spread</td><td class="v">s, then shadow matching</td><td>First edition: the published index plus or minus half of <i>s</i>, calibrated from observed trade dispersion around the index in the chosen zone over a full season. Then shadow matching on exchange trades.</td></tr>
           <tr><td>Intraday volume cap</td><td class="v">per quarter-hour</td><td>To calibrate, so participants cannot meaningfully move the price.</td></tr>
           <tr><td>Impact base</td><td class="v">bid ladder</td><td>From the activated aFRR/mFRR bid ladder, per quarter-hour: your imbalance is added to the system&rsquo;s and priced at the resulting marginal price.</td></tr>
           <tr><td>Impact scaling</td><td class="v">0.5&ndash;3&times;</td><td>Period spread against its running median, clipped, so tight periods bite and slack ones do not.</td></tr>
-          <tr><td>Imbalance rule</td><td class="v">to confirm</td><td>One-price or two-price settlement, mirroring Energinet's live rule. Changes the optimal commitment entirely.</td></tr>
+          <tr><td>Imbalance rule</td><td class="v">single price</td><td>One imbalance price per quarter-hour for both directions.</td></tr>
           <tr><td>Scoring lag</td><td class="v">T+2</td><td>Leaderboard waits for final imbalance prices rather than preliminary ones.</td></tr>
-          <tr><td>Storage</td><td class="v">20 MW / 40 MWh</td><td>Two hours at full power, the shape most often built alongside wind in the zone. Identical for everyone, empty at the start of the edition, optional to schedule.</td></tr>
+          <tr><td>Storage</td><td class="v">set by the sponsor</td><td>Sized to what is typically built alongside the asset in the zone. Identical for everyone, empty at the start of the edition, optional to schedule.</td></tr>
           <tr><td>Round-trip efficiency</td><td class="v">90&nbsp;%</td><td>Split evenly across charge and discharge. Bounds and losses are checked by the engine, not by the participant.</td></tr>
           <tr><td>Cycle cost</td><td class="v">c</td><td>Per MWh discharged, from the amortised cell cost of a battery this size. Set high enough that cycling on forecast noise does not pay.</td></tr>
           <tr><td>Aggregation rule</td><td class="v">median</td><td>Median position and quantile-wise median across submissions above baseline. Compared with the mean and a trimmed mean on warm-up data before the first live month.</td></tr>
@@ -1211,7 +1209,7 @@ tr:last-child td{border-bottom:0}
   }
   bars.appendChild(frag);
 
-  /* ---------- model: DK1 wind, day-ahead + intraday + imbalance ---------- */
+  /* ---------- model: a wind asset, day-ahead + intraday + imbalance (illustrative prices) ---------- */
   var Q = [22.75,25.86,27.97,29.62,31.01,32.21,33.29,34.27,35.18,36.02,36.81,37.55,38.26,38.94,39.59,40.21,40.82,41.4,41.96,42.51,43.05,43.57,44.08,44.57,45.06,45.54,46.01,46.47,46.93,47.37,47.82,48.25,48.68,49.11,49.53,49.94,50.36,50.76,51.17,51.57,51.97,52.37,52.76,53.16,53.55,53.94,54.32,54.71,55.09,55.48,55.86,56.24,56.63,57.01,57.39,57.78,58.16,58.54,58.93,59.32,59.7,60.09,60.49,60.88,61.28,61.67,62.08,62.48,62.89,63.3,63.72,64.14,64.56,65,65.43,65.88,66.33,66.79,67.26,67.74,68.23,68.73,69.24,69.77,70.32,70.88,71.47,72.08,72.72,73.39,74.1,74.86,75.68,76.57,77.55,78.67,80,81.66,84.06];
   var PDA = 80, RESID = 7;
   function prices(j){
@@ -1295,7 +1293,7 @@ tr:last-child td{border-bottom:0}
     labDA.setAttribute("y", Y(curveDA[59]) + 22);
     elDA.textContent = (vDA*100).toFixed(1) + "%";
     elID.textContent = "+" + (vID - vDA >= 0 ? "" : "") + ((vID - vDA)*100).toFixed(1) + " pts";
-    elCommit.textContent = c.toFixed(1) + " MW";
+    elCommit.textContent = "sell " + c.toFixed(1) + "%";
 
     var gap = (vID - vDA) * 100;
     if (L === bestDA){
