@@ -238,8 +238,8 @@ ol.steps p{margin-top:6px; color:var(--ink2); font-size:.95rem}
 form{display:grid; gap:14px; margin-top:22px; max-width:520px}
 .field{display:grid; gap:6px}
 label{font-family:"Geist Mono",monospace; font-size:.7rem; letter-spacing:.12em; text-transform:uppercase; color:var(--ink2)}
-input[type=email], select{font:inherit; font-size:.95rem; color:var(--ink); background:var(--ground); border:1px solid var(--rule); border-radius:2px; padding:11px 12px; width:100%}
-input[type=email]:focus, select:focus{outline:2px solid var(--blue); outline-offset:1px; border-color:var(--blue)}
+input[type=email], select, textarea{font:inherit; font-size:.95rem; color:var(--ink); background:var(--ground); border:1px solid var(--rule); border-radius:2px; padding:11px 12px; width:100%}
+input[type=email]:focus, select:focus, textarea:focus{outline:2px solid var(--blue); outline-offset:1px; border-color:var(--blue)}
 button{font:inherit; font-size:.93rem; font-weight:500; color:var(--ground); background:var(--ink); border:1px solid var(--ink); border-radius:2px; padding:12px 20px; cursor:pointer; justify-self:start}
 button:hover{opacity:.85}
 button:focus-visible{outline:2px solid var(--blue); outline-offset:3px}
@@ -252,6 +252,8 @@ button:focus-visible{outline:2px solid var(--blue); outline-offset:3px}
 .err{font-size:.9rem; color:var(--amber); margin-top:10px}
 .consent{display:flex; gap:10px; align-items:flex-start; font-family:inherit; font-size:.88rem; letter-spacing:0; text-transform:none; color:var(--ink2)}
 .consent input{margin-top:3px; accent-color:var(--ink)}
+textarea{resize:vertical; min-height:84px; line-height:1.45}
+label .opt{text-transform:none; letter-spacing:0}
 .hp{position:absolute; left:-10000px; width:1px; height:1px; overflow:hidden}
 button:disabled{opacity:.5; cursor:default}
 .live-tag{display:flex; align-items:center; gap:8px; margin-bottom:14px; color:var(--green)}
@@ -655,6 +657,10 @@ tr:last-child td{border-bottom:0}
             <option value="researcher">a researcher</option>
             <option value="curious">just curious</option>
           </select>
+        </div>
+        <div class="field">
+          <label for="message">Message <span class="opt">(optional)</span></label>
+          <textarea id="message" name="message" rows="3" maxlength="1000" placeholder="Anything you would like us to know: the market or asset you care about, how you would like to take part, a question"></textarea>
         </div>
         <div class="hp" aria-hidden="true"><label for="website">Leave this empty</label><input type="text" id="website" name="website" tabindex="-1" autocomplete="off"></div>
         <label class="consent"><input type="checkbox" id="consent" name="consent" required> Email me about Foretec editions. I can unsubscribe at any time.</label>
@@ -1344,7 +1350,8 @@ tr:last-child td{border-bottom:0}
     var btn = form.querySelector("button"); btn.disabled = true;
     fetch("https://energybench.foretec.co/api/waitlist", {
       method: "POST", headers: {"Content-Type": "application/json", "Accept": "application/json"},
-      body: JSON.stringify({email: email, role: document.getElementById("role").value, consent: true,
+      body: JSON.stringify({email: email, role: document.getElementById("role").value,
+                            message: document.getElementById("message").value.trim(), consent: true,
                             website: document.getElementById("website").value})
     }).then(function(r){ return r.json().catch(function(){ return {}; }).then(function(j){ return {ok: r.ok, j: j}; }); })
       .then(function(x){
